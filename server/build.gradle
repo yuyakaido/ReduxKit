@@ -10,3 +10,7 @@ android {
         versionName "1.0"
     }
 }
+
+dependencies {
+    implementation 'org.nanohttpd:nanohttpd:2.2.0'
+}
