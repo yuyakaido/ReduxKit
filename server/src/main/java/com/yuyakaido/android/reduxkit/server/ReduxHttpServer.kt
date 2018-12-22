@@ -8,7 +8,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 
-class Server(
+class ReduxHttpServer(
     private val context: Context
 ) : NanoHTTPD(8080) {
 
