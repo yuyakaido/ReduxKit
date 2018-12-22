@@ -1,3 +1,9 @@
 package com.yuyakaido.android.reduxkit.core
 
-class Redux
+interface StateType
+
+interface ActionType
+
+interface ReducerType<STATE : StateType, ACTION : ActionType> {
+    fun reduce(state: STATE, action: ACTION): STATE
+}
