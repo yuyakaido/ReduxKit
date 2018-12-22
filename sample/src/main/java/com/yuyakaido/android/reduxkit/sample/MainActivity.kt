@@ -12,7 +12,7 @@ import io.reactivex.rxkotlin.subscribeBy
 
 class MainActivity : AppCompatActivity() {
 
-    private val server = Server()
+    private val server by lazy { Server(this) }
     private val disposables = CompositeDisposable()
     private val store = AppStore()
 
