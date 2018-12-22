@@ -1,6 +1,7 @@
 package com.yuyakaido.android.reduxkit.sample
 
 import com.jakewharton.rxrelay2.BehaviorRelay
+import io.reactivex.Observable
 
 class AppStore(
     private val initial: AppState = AppState(),
@@ -15,7 +16,7 @@ class AppStore(
         }
     }
 
-    override fun observable(): io.reactivex.Observable<AppState> {
+    override fun observable(): Observable<AppState> {
         return state
     }
 
