@@ -10,18 +10,16 @@ data class Todo(
 
     companion object {
         fun createTodos(): List<Todo> {
-            return List(10) { index ->
-                Todo(
-                    title = index.toString(),
-                    date = Date(),
-                    isCompleted = false
-                )
-            }
+            return listOf(
+                Todo(title = "📝 AdventCalendarを書く", date = Date(), isCompleted = false),
+                Todo(title = "🚄 新幹線のチケットを取る", date = Date(), isCompleted = false),
+                Todo(title = "🏠 マンションの更新をする", date = Date(), isCompleted = true)
+            )
         }
 
         fun new(): Todo {
             return Todo(
-                title = "New!",
+                title = "🎉 NewTask",
                 date = Date(),
                 isCompleted = false
             )

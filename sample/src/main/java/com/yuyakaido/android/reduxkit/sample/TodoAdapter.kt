@@ -1,6 +1,7 @@
 package com.yuyakaido.android.reduxkit.sample
 
 import android.support.v7.widget.RecyclerView
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,11 @@ class TodoAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val todo = todos[position]
         holder.title.text = todo.title
-        holder.date.text = todo.date.toString()
+        holder.date.text = DateUtils.formatDateTime(
+            holder.itemView.context,
+            todo.date.time,
+            DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_ABBREV_ALL
+        )
     }
 
     override fun getItemCount(): Int {

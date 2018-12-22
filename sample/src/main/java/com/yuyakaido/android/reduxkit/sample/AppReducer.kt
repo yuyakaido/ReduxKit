@@ -9,12 +9,6 @@ class AppReducer : ReducerType<AppState, AppAction> {
             is AppAction.AddTodo -> {
                 state.copy(todos = state.todos.plus(action.todo))
             }
-            is AppAction.RemoveTodo -> {
-                state.copy(todos = state.todos.minus(action.todo))
-            }
-            is AppAction.CompleteTodo -> {
-                state.copy(todos = state.todos.map { if (it == action.todo) { action.todo } else { it } })
-            }
         }
     }
 

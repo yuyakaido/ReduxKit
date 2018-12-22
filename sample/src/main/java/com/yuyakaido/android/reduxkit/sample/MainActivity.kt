@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         store.observable()
             .map { state -> state.todos }
+            .map { todos -> todos.filterNot { todo -> todo.isCompleted } }
             .subscribeBy { todos ->
                 adapter.setTodos(todos)
                 adapter.notifyDataSetChanged()
