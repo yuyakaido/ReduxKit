@@ -1,6 +1,7 @@
 package com.yuyakaido.android.reduxkit.server
 
 import android.content.Context
+import android.util.Log
 import fi.iki.elonen.NanoHTTPD
 
 import java.io.BufferedReader
@@ -12,7 +13,37 @@ class DevToolServer(
     private val context: Context
 ) : NanoHTTPD(8080) {
 
+    enum class RequestType(val path: String) {
+        Root("/"),
+        Favicon("/favicon.ico"),
+        State("/state");
+
+        companion object {
+            fun from(uri: String): RequestType {
+                return RequestType.values().first { it.path == uri }
+            }
+        }
+    }
+
     override fun serve(session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
+        val method = session.method
+        val uri = session.uri
+        Log.v("DevToolServer", "$method $uri")
+
+        val type = RequestType.from(uri)
+
+        return when (type) {
+            RequestType.Root,
+            RequestType.Favicon -> {
+                serveRoot()
+            }
+            RequestType.State -> {
+                serveState()
+            }
+        }
+    }
+
+    private fun serveRoot(): NanoHTTPD.Response {
         val stream: InputStream
         val reader: BufferedReader
         val builder = StringBuilder()
@@ -31,6 +62,10 @@ class DevToolServer(
             e.printStackTrace()
         }
         return NanoHTTPD.newFixedLengthResponse(builder.toString())
+    }
+
+    private fun serveState(): NanoHTTPD.Response {
+        return NanoHTTPD.newFixedLengthResponse("state")
     }
 
 }
