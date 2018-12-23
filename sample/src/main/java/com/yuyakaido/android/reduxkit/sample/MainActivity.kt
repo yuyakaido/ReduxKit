@@ -1,22 +1,18 @@
 package com.yuyakaido.android.reduxkit.sample
 
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import com.yuyakaido.android.reduxkit.server.ReduxHttpServer
-import com.yuyakaido.android.reduxkit.server.ReduxWekSocketServer
+import com.yuyakaido.android.reduxkit.server.DevToolServer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 
 class MainActivity : AppCompatActivity() {
 
-    private val httpServer by lazy { ReduxHttpServer(this) }
-    private val webSocketServer = ReduxWekSocketServer()
-    private val webSocketClient = ReduxWebSocketClient()
+    private val server by lazy { DevToolServer(this) }
 
     private val disposables = CompositeDisposable()
     private val store = AppStore()
@@ -24,27 +20,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupNetworking()
+        setupDevToolServer()
         setupRecyclerView()
         setupFloatingActionButton()
     }
 
     override fun onDestroy() {
-        httpServer.stop()
-        webSocketServer.stop()
-        webSocketClient.close()
+        server.stop()
         disposables.dispose()
         super.onDestroy()
     }
 
-    private fun setupNetworking() {
-        httpServer.start()
-        webSocketServer.isReuseAddr = true
-        webSocketServer.start()
-        Handler().post {
-            webSocketClient.connect()
-            Handler().post { webSocketClient.send("Hello!") }
-        }
+    private fun setupDevToolServer() {
+        server.start()
     }
 
     private fun setupRecyclerView() {
