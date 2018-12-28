@@ -12,10 +12,10 @@ import io.reactivex.rxkotlin.subscribeBy
 
 class MainActivity : AppCompatActivity() {
 
-    private val server by lazy { DevToolServer(this) }
-
     private val disposables = CompositeDisposable()
     private val store = AppStore()
+
+    private val server by lazy { DevToolServer(this, store) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

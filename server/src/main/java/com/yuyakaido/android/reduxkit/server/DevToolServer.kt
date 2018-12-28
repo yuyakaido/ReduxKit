@@ -10,7 +10,8 @@ import java.io.InputStream
 import java.io.InputStreamReader
 
 class DevToolServer(
-    private val context: Context
+    private val context: Context,
+    private val stateProvider: StateProvider
 ) : NanoHTTPD(8080) {
 
     enum class RequestType(val path: String) {
@@ -65,7 +66,7 @@ class DevToolServer(
     }
 
     private fun serveState(): NanoHTTPD.Response {
-        return NanoHTTPD.newFixedLengthResponse("state")
+        return NanoHTTPD.newFixedLengthResponse(stateProvider.json())
     }
 
 }
