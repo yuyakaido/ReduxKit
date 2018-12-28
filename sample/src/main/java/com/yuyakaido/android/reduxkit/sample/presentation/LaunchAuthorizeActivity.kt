@@ -1,4 +1,4 @@
-package com.yuyakaido.android.reduxkit.sample
+package com.yuyakaido.android.reduxkit.sample.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.yuyakaido.android.reduxkit.sample.BuildConfig
+import com.yuyakaido.android.reduxkit.sample.R
 
 class LaunchAuthorizeActivity : AppCompatActivity() {
 

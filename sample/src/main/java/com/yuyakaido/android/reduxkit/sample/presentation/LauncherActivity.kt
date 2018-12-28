@@ -1,4 +1,4 @@
-package com.yuyakaido.android.reduxkit.sample
+package com.yuyakaido.android.reduxkit.sample.presentation
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

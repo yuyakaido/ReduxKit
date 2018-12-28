@@ -1,4 +1,4 @@
-package com.yuyakaido.android.reduxkit.sample
+package com.yuyakaido.android.reduxkit.sample.presentation
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,6 +7,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.yuyakaido.android.reduxkit.sample.AppAction
+import com.yuyakaido.android.reduxkit.sample.R
+import com.yuyakaido.android.reduxkit.sample.app.ReduxKit
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -20,11 +23,9 @@ class SearchFragment : Fragment() {
         fun newInstance() = SearchFragment()
     }
 
-    private lateinit var store: AppStore
     private lateinit var disposables: CompositeDisposable
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        store = AppStore()
         disposables = CompositeDisposable()
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
@@ -45,6 +46,7 @@ class SearchFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
+        val store = (requireContext().applicationContext as ReduxKit).store
         store.observable()
             .map { it.repos }
             .subscribeBy { repos ->
@@ -53,8 +55,8 @@ class SearchFragment : Fragment() {
             }
             .addTo(disposables)
 
-        GitHubRepository()
-            .searchRepositoriesByQuery(query = "CardStackView")
+        GitHubRepository(requireContext())
+            .searchRepositoriesByQuery("CardStackView")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { repos ->

@@ -1,7 +1,9 @@
 package com.yuyakaido.android.reduxkit.sample.infra
 
+import android.content.Context
 import com.yuyakaido.android.reduxkit.sample.BuildConfig
 import com.yuyakaido.android.reduxkit.sample.domain.AccessToken
+import com.yuyakaido.android.reduxkit.sample.domain.Owner
 import com.yuyakaido.android.reduxkit.sample.domain.Repo
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -12,10 +14,13 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-class GitHubClient {
+class GitHubClient(
+    private val context: Context
+) {
 
     private val client = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
+        .addInterceptor(GitHubInterceptor(context))
         .build()
     private val oauthRetrofit = Retrofit.Builder()
         .client(client)
@@ -47,6 +52,11 @@ class GitHubClient {
             .singleOrError()
     }
 
+    fun getUser(): Single<Owner> {
+        return apiService.getUser()
+            .singleOrError()
+    }
+
     interface GitHubOauthService {
         @FormUrlEncoded
         @Headers("Accept: application/json")
@@ -63,6 +73,9 @@ class GitHubClient {
         fun searchRepositoriesByQuery(
             @Query("q") query: String
         ): Observable<SearchResponse>
+
+        @GET("user")
+        fun getUser(): Observable<Owner>
     }
 
 }

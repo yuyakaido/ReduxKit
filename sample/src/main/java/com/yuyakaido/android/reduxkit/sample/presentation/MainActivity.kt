@@ -1,9 +1,12 @@
-package com.yuyakaido.android.reduxkit.sample
+package com.yuyakaido.android.reduxkit.sample.presentation
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import com.yuyakaido.android.reduxkit.sample.R
+import com.yuyakaido.android.reduxkit.sample.app.ReduxKit
 import com.yuyakaido.android.reduxkit.server.DevToolServer
 import io.reactivex.disposables.CompositeDisposable
 
@@ -16,15 +19,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val disposables = CompositeDisposable()
-    private val store = AppStore()
 
+    private val store by lazy { (application as ReduxKit).store }
     private val server by lazy { DevToolServer(this, store) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setupDevToolServer()
-        setupSearchFragment()
+        setupViewPager()
     }
 
     override fun onDestroy() {
@@ -37,10 +40,9 @@ class MainActivity : AppCompatActivity() {
         server.start()
     }
 
-    private fun setupSearchFragment() {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, SearchFragment.newInstance())
-        transaction.commit()
+    private fun setupViewPager() {
+        val viewPager = findViewById<ViewPager>(R.id.view_pager)
+        viewPager.adapter = MainFragmentViewPagerAdapter(supportFragmentManager)
     }
 
 }

@@ -1,7 +1,5 @@
-package com.yuyakaido.android.reduxkit.sample
+package com.yuyakaido.android.reduxkit.sample.presentation
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.yuyakaido.android.reduxkit.sample.domain.AccessToken
@@ -13,12 +11,6 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class CompleteAuthorizeActivity : AppCompatActivity() {
-
-    companion object {
-        fun createIntent(context: Context): Intent {
-            return Intent(context, CompleteAuthorizeActivity::class.java)
-        }
-    }
 
     private val disposables = CompositeDisposable()
 
@@ -35,7 +27,7 @@ class CompleteAuthorizeActivity : AppCompatActivity() {
     private fun handleUrlScheme() {
         intent.data?.let { uri ->
             uri.getQueryParameter("code")?.let { code ->
-                GitHubRepository()
+                GitHubRepository(this)
                     .getAccessToken(code)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

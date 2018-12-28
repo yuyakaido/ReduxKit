@@ -1,10 +1,11 @@
-package com.yuyakaido.android.reduxkit.sample
+package com.yuyakaido.android.reduxkit.sample.presentation
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.yuyakaido.android.reduxkit.sample.R
 import com.yuyakaido.android.reduxkit.sample.domain.Repo
 
 class RepoAdapter(
