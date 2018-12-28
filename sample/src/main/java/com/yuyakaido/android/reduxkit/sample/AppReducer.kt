@@ -6,8 +6,8 @@ class AppReducer : ReducerType<AppState, AppAction> {
 
     override fun reduce(state: AppState, action: AppAction): AppState {
         return when (action) {
-            is AppAction.AddTodo -> {
-                state.copy(todos = state.todos.plus(action.todo))
+            is AppAction.ReplaceRepo -> {
+                state.copy(repos = action.repos)
             }
         }
     }

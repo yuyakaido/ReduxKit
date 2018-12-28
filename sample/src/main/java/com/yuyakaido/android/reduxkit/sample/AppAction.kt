@@ -1,7 +1,8 @@
 package com.yuyakaido.android.reduxkit.sample
 
 import com.yuyakaido.android.reduxkit.core.ActionType
+import com.yuyakaido.android.reduxkit.sample.domain.Repo
 
 sealed class AppAction : ActionType {
-    data class AddTodo(val todo: Todo) : AppAction()
+    data class ReplaceRepo(val repos: List<Repo>) : AppAction()
 }
