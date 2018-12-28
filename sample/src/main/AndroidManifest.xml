@@ -12,12 +12,25 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:theme="@style/Theme.AppCompat.Light">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".LaunchAuthorizeActivity"/>
+
+        <activity android:name=".CompleteAuthorizeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="com.yuyakaido.android.reduxkit.sample" android:host="complete_authorize"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MainActivity"/>
 
     </application>
 
