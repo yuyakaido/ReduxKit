@@ -31,6 +31,11 @@ dependencies {
     implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.0'
 
     // Networking
+    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation 'org.nanohttpd:nanohttpd:2.2.0'
     implementation 'com.google.code.gson:gson:2.8.5'
 }
