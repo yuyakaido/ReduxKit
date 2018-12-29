@@ -1,6 +1,7 @@
 package com.yuyakaido.android.reduxkit.sample.infra
 
 import android.content.Context
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.yuyakaido.android.reduxkit.sample.BuildConfig
 import com.yuyakaido.android.reduxkit.sample.domain.AccessToken
 import com.yuyakaido.android.reduxkit.sample.domain.Owner
@@ -21,6 +22,7 @@ class GitHubClient(
     private val client = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
         .addInterceptor(GitHubInterceptor(context))
+        .addNetworkInterceptor(StethoInterceptor())
         .build()
     private val oauthRetrofit = Retrofit.Builder()
         .client(client)
