@@ -1,46 +1,21 @@
 package com.yuyakaido.android.reduxkit.sample.infra
 
-import android.content.Context
-import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.yuyakaido.android.reduxkit.sample.BuildConfig
 import com.yuyakaido.android.reduxkit.sample.domain.AccessToken
 import com.yuyakaido.android.reduxkit.sample.domain.Owner
 import com.yuyakaido.android.reduxkit.sample.domain.Repo
 import io.reactivex.Observable
 import io.reactivex.Single
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import javax.inject.Inject
 
-class GitHubClient(
-    private val context: Context
+class GitHubClient @Inject constructor(
+    private val authService: GitHubAuthService,
+    private val apiService: GitHubApiService
 ) {
 
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
-        .addInterceptor(GitHubInterceptor(context))
-        .addNetworkInterceptor(StethoInterceptor())
-        .build()
-    private val oauthRetrofit = Retrofit.Builder()
-        .client(client)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .baseUrl("https://github.com/login/oauth/")
-        .build()
-    private val apiRetrofit = Retrofit.Builder()
-        .client(client)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .baseUrl("https://api.github.com/")
-        .build()
-    private val oauthService = oauthRetrofit.create(GitHubOauthService::class.java)
-    private val apiService = apiRetrofit.create(GitHubApiService::class.java)
-
     fun getAccessToken(code: String): Single<AccessToken> {
-        return oauthService.getAccessToken(
+        return authService.getAccessToken(
             clientId = BuildConfig.CLIENT_ID,
             clientSecret = BuildConfig.CLIENT_SECRET,
             code = code)
@@ -59,7 +34,7 @@ class GitHubClient(
             .singleOrError()
     }
 
-    interface GitHubOauthService {
+    interface GitHubAuthService {
         @FormUrlEncoded
         @Headers("Accept: application/json")
         @POST("access_token")

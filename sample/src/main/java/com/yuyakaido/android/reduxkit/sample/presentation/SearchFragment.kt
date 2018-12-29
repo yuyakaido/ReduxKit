@@ -1,7 +1,6 @@
 package com.yuyakaido.android.reduxkit.sample.presentation
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,21 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import com.yuyakaido.android.reduxkit.sample.AppAction
 import com.yuyakaido.android.reduxkit.sample.R
-import com.yuyakaido.android.reduxkit.sample.app.ReduxKit
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = SearchFragment()
     }
 
     private lateinit var disposables: CompositeDisposable
+
+    @Inject
+    lateinit var gitHubRepository: GitHubRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         disposables = CompositeDisposable()
@@ -46,8 +48,7 @@ class SearchFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
-        val store = (requireContext().applicationContext as ReduxKit).store
-        store.observable()
+        appStore.observable()
             .map { it.repos }
             .subscribeBy { repos ->
                 adapter.setRepos(repos)
@@ -55,12 +56,11 @@ class SearchFragment : Fragment() {
             }
             .addTo(disposables)
 
-        GitHubRepository(requireContext())
-            .searchRepositoriesByQuery("CardStackView")
+        gitHubRepository.searchRepositoriesByQuery("CardStackView")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { repos ->
-                store.dispatch(AppAction.ReplaceRepo(repos))
+                appStore.dispatch(AppAction.ReplaceRepo(repos))
             }
             .addTo(disposables)
     }

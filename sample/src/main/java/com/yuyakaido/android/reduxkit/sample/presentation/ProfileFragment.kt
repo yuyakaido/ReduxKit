@@ -1,7 +1,6 @@
 package com.yuyakaido.android.reduxkit.sample.presentation
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.yuyakaido.android.reduxkit.sample.AppAction
 import com.yuyakaido.android.reduxkit.sample.R
-import com.yuyakaido.android.reduxkit.sample.app.ReduxKit
 import com.yuyakaido.android.reduxkit.sample.domain.Owner
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,14 +16,18 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = ProfileFragment()
     }
 
     private lateinit var disposables: CompositeDisposable
+
+    @Inject
+    lateinit var gitHubRepository: GitHubRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         disposables = CompositeDisposable()
@@ -43,18 +45,17 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setup(view: View) {
-        val store = (requireContext().applicationContext as ReduxKit).store
-        store.observable()
+        appStore.observable()
             .filter { it.user.hasValue() }
             .map { it.user.value }
             .cast(Owner::class.java)
             .subscribeBy { user -> setupProfile(view, user) }
             .addTo(disposables)
 
-        GitHubRepository(requireContext()).getUser()
+        gitHubRepository.getUser()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { user -> store.dispatch(AppAction.ReplaceUser(user)) }
+            .subscribeBy { user -> appStore.dispatch(AppAction.ReplaceUser(user)) }
             .addTo(disposables)
     }
 

@@ -4,13 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
 import com.yuyakaido.android.reduxkit.sample.R
-import com.yuyakaido.android.reduxkit.sample.app.ReduxKit
 import com.yuyakaido.android.reduxkit.server.DevToolServer
 import io.reactivex.disposables.CompositeDisposable
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     companion object {
         fun createIntent(context: Context): Intent {
@@ -20,8 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private val disposables = CompositeDisposable()
 
-    private val store by lazy { (application as ReduxKit).store }
-    private val server by lazy { DevToolServer(this, store) }
+    private val server by lazy { DevToolServer(this, appStore) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

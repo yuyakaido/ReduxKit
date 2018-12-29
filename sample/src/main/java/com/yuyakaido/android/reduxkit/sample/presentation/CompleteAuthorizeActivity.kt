@@ -1,7 +1,6 @@
 package com.yuyakaido.android.reduxkit.sample.presentation
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import com.yuyakaido.android.reduxkit.sample.domain.AccessToken
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -9,10 +8,14 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class CompleteAuthorizeActivity : AppCompatActivity() {
+class CompleteAuthorizeActivity : BaseActivity() {
 
     private val disposables = CompositeDisposable()
+
+    @Inject
+    lateinit var gitHubRepository: GitHubRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +30,7 @@ class CompleteAuthorizeActivity : AppCompatActivity() {
     private fun handleUrlScheme() {
         intent.data?.let { uri ->
             uri.getQueryParameter("code")?.let { code ->
-                GitHubRepository(this)
-                    .getAccessToken(code)
+                gitHubRepository.getAccessToken(code)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeBy { token ->
