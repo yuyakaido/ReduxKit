@@ -1,17 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="24dp">
 
-    <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/avatar"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerHorizontal="true"
-            app:riv_corner_radius="16dp"/>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
 
-</RelativeLayout>
+        <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/avatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                app:riv_corner_radius="16dp"/>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/avatar"
+                android:layout_toEndOf="@+id/avatar"
+                android:gravity="center_vertical">
+
+            <TextView
+                    android:id="@+id/login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="ID: yuyakaido"/>
+
+            <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    tools:text="Name: Yuya Kaido"/>
+
+            <TextView
+                    android:id="@+id/bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Bio: Android Engineer"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+            android:id="@+id/company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            tools:text="Company: eureka, Inc."/>
+
+    <TextView
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            tools:text="Location: Tokyo, Japan"/>
+
+    <TextView
+            android:id="@+id/blog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Blog: http://yuyakaido.hatenablog.com/"/>
+
+</LinearLayout>
