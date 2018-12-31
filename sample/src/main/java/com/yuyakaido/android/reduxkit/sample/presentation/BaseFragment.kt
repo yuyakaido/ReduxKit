@@ -1,6 +1,6 @@
 package com.yuyakaido.android.reduxkit.sample.presentation
 
-import com.yuyakaido.android.reduxkit.sample.AppStore
+import com.yuyakaido.android.reduxkit.sample.app.store.AppStore
 import com.yuyakaido.android.reduxkit.sample.app.ReduxKit
 import dagger.android.support.DaggerFragment
 

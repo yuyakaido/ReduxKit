@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.yuyakaido.android.reduxkit.sample.AppAction
+import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
 import com.yuyakaido.android.reduxkit.sample.R
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -49,7 +49,7 @@ class SearchFragment : BaseFragment() {
         recyclerView.adapter = adapter
 
         appStore.observable()
-            .map { it.repos }
+            .map { it.session.repos }
             .subscribeBy { repos ->
                 adapter.setRepos(repos)
                 adapter.notifyDataSetChanged()
@@ -60,7 +60,7 @@ class SearchFragment : BaseFragment() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { repos ->
-                appStore.dispatch(AppAction.ReplaceRepo(repos))
+                appStore.dispatch(AppAction.SessionAction.ReplaceRepos(repos))
             }
             .addTo(disposables)
     }

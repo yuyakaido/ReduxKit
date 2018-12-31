@@ -2,7 +2,7 @@ package com.yuyakaido.android.reduxkit.sample.di.module
 
 import android.app.Application
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.yuyakaido.android.reduxkit.sample.AppStore
+import com.yuyakaido.android.reduxkit.sample.app.store.AppStore
 import com.yuyakaido.android.reduxkit.sample.app.ReduxKit
 import com.yuyakaido.android.reduxkit.sample.di.annotation.AppScope
 import com.yuyakaido.android.reduxkit.sample.di.annotation.GitHubApiRetrofit

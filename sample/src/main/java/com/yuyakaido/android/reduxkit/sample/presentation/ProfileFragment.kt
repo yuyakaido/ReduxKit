@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.yuyakaido.android.reduxkit.sample.AppAction
 import com.yuyakaido.android.reduxkit.sample.R
+import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
 import com.yuyakaido.android.reduxkit.sample.domain.Owner
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -46,8 +46,8 @@ class ProfileFragment : BaseFragment() {
 
     private fun setup(view: View) {
         appStore.observable()
-            .filter { it.user.hasValue() }
-            .map { it.user.value }
+            .filter { it.session.user.hasValue() }
+            .map { it.session.user.value }
             .cast(Owner::class.java)
             .subscribeBy { user -> setupProfile(view, user) }
             .addTo(disposables)
@@ -55,7 +55,7 @@ class ProfileFragment : BaseFragment() {
         gitHubRepository.getUser()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { user -> appStore.dispatch(AppAction.ReplaceUser(user)) }
+            .subscribeBy { user -> appStore.dispatch(AppAction.SessionAction.ReplaceUser(user)) }
             .addTo(disposables)
     }
 

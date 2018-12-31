@@ -1,4 +1,4 @@
-package com.yuyakaido.android.reduxkit.sample
+package com.yuyakaido.android.reduxkit.sample.app.store
 
 import com.yuyakaido.android.reduxkit.core.ActionType
 import com.yuyakaido.android.reduxkit.core.StateType
