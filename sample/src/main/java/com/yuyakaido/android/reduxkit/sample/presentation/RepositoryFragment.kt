@@ -2,12 +2,11 @@ package com.yuyakaido.android.reduxkit.sample.presentation
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.yuyakaido.android.reduxkit.sample.R
 import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
+import com.yuyakaido.android.reduxkit.sample.databinding.FragmentRepositoryBinding
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,13 +22,15 @@ class RepositoryFragment : BaseFragment() {
     }
 
     private lateinit var disposables: CompositeDisposable
+    private lateinit var binding: FragmentRepositoryBinding
 
     @Inject
     lateinit var gitHubRepository: GitHubRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         disposables = CompositeDisposable()
-        return inflater.inflate(R.layout.fragment_repository, container, false)
+        binding = FragmentRepositoryBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,9 +45,8 @@ class RepositoryFragment : BaseFragment() {
 
     private fun setupRecyclerView(view: View) {
         val adapter = RepoAdapter()
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
 
         appStore.observable()
             .map { it.session.ownRepos }

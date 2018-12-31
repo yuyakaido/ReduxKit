@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import com.yuyakaido.android.reduxkit.sample.R
+import com.yuyakaido.android.reduxkit.sample.databinding.ActivityMainBinding
 import com.yuyakaido.android.reduxkit.server.DevToolServer
 import io.reactivex.disposables.CompositeDisposable
 
@@ -19,10 +20,11 @@ class MainActivity : BaseActivity() {
     private val disposables = CompositeDisposable()
 
     private val server by lazy { DevToolServer(this, appStore) }
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
         setupDevToolServer()
         setupViewPager()
     }
@@ -38,8 +40,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupViewPager() {
-        val viewPager = findViewById<ViewPager>(R.id.view_pager)
-        viewPager.adapter = MainFragmentViewPagerAdapter(supportFragmentManager)
+        binding.viewPager.adapter = MainFragmentViewPagerAdapter(supportFragmentManager)
     }
 
 }

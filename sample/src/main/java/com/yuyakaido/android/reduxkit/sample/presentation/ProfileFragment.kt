@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.yuyakaido.android.reduxkit.sample.R
 import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
+import com.yuyakaido.android.reduxkit.sample.databinding.FragmentProfileBinding
 import com.yuyakaido.android.reduxkit.sample.domain.Owner
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,18 +24,20 @@ class ProfileFragment : BaseFragment() {
     }
 
     private lateinit var disposables: CompositeDisposable
+    private lateinit var binding: FragmentProfileBinding
 
     @Inject
     lateinit var gitHubRepository: GitHubRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         disposables = CompositeDisposable()
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding = FragmentProfileBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setup(view)
+        setup()
     }
 
     override fun onDestroyView() {
@@ -44,12 +45,12 @@ class ProfileFragment : BaseFragment() {
         super.onDestroyView()
     }
 
-    private fun setup(view: View) {
+    private fun setup() {
         appStore.observable()
             .filter { it.session.user.hasValue() }
             .map { it.session.user.value }
             .cast(Owner::class.java)
-            .subscribeBy { user -> setupProfile(view, user) }
+            .subscribeBy { user -> setupProfile(user) }
             .addTo(disposables)
 
         gitHubRepository.getUser()
@@ -59,30 +60,14 @@ class ProfileFragment : BaseFragment() {
             .addTo(disposables)
     }
 
-    private fun setupProfile(view: View, user: Owner) {
-        // Avatar
-        val avatar = view.findViewById<ImageView>(R.id.avatar)
-        Glide.with(requireContext())
-            .load(user.avatarUrl)
-            .into(avatar)
-        // Login
-        val login = view.findViewById<TextView>(R.id.login)
-        login.text = getString(R.string.profile_id, user.login)
-        // Name
-        val name = view.findViewById<TextView>(R.id.name)
-        name.text = getString(R.string.profile_name, user.name)
-        // Bio
-        val bio = view.findViewById<TextView>(R.id.bio)
-        bio.text = getString(R.string.profile_bio, user.bio)
-        // Company
-        val company = view.findViewById<TextView>(R.id.company)
-        company.text = getString(R.string.profile_company, user.company)
-        // Location
-        val location = view.findViewById<TextView>(R.id.location)
-        location.text = getString(R.string.profile_location, user.location)
-        // Blog
-        val blog = view.findViewById<TextView>(R.id.blog)
-        blog.text = getString(R.string.profile_blog, user.blog)
+    private fun setupProfile(user: Owner) {
+        Glide.with(requireContext()).load(user.avatarUrl).into(binding.avatar)
+        binding.login.text = getString(R.string.profile_id, user.login)
+        binding.name.text = getString(R.string.profile_name, user.name)
+        binding.bio.text = getString(R.string.profile_bio, user.bio)
+        binding.company.text = getString(R.string.profile_company, user.company)
+        binding.location.text = getString(R.string.profile_location, user.location)
+        binding.blog.text = getString(R.string.profile_blog, user.blog)
     }
 
 }

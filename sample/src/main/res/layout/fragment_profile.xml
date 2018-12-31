@@ -1,89 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="24dp">
+<layout>
 
-    <RelativeLayout
+    <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="120dp">
+            android:layout_height="match_parent"
+            android:padding="24dp">
 
-        <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/avatar"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginRight="24dp"
-                android:layout_marginEnd="24dp"
-                app:riv_corner_radius="16dp"/>
-
-        <LinearLayout
-                android:orientation="vertical"
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/avatar"
-                android:layout_toEndOf="@+id/avatar"
-                android:gravity="center_vertical">
+                android:layout_height="120dp">
 
-            <TextView
-                    android:id="@+id/login"
+            <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginEnd="24dp"
+                    app:riv_corner_radius="16dp"/>
+
+            <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:text="@string/profile_id"/>
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/avatar"
+                    android:layout_toEndOf="@+id/avatar"
+                    android:gravity="center_vertical">
 
-            <TextView
-                    android:id="@+id/name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:text="@string/profile_name"/>
+                <TextView
+                        android:id="@+id/login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="@string/profile_id"/>
 
-            <TextView
-                    android:id="@+id/bio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:text="@string/profile_bio"/>
+                <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="@string/profile_name"/>
 
-        </LinearLayout>
+                <TextView
+                        android:id="@+id/bio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="@string/profile_bio"/>
 
-    </RelativeLayout>
+            </LinearLayout>
 
-    <TextView
-            android:id="@+id/company"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:text="@string/profile_company"/>
+        </RelativeLayout>
 
-    <TextView
-            android:id="@+id/location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:text="@string/profile_location"/>
+        <TextView
+                android:id="@+id/company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="@string/profile_company"/>
 
-    <TextView
-            android:id="@+id/blog"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:text="@string/profile_blog"/>
+        <TextView
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="@string/profile_location"/>
 
-</LinearLayout>
+        <TextView
+                android:id="@+id/blog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="@string/profile_blog"/>
+
+    </LinearLayout>
+
+</layout>

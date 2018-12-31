@@ -2,12 +2,11 @@ package com.yuyakaido.android.reduxkit.sample.presentation
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.yuyakaido.android.reduxkit.sample.R
 import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
+import com.yuyakaido.android.reduxkit.sample.databinding.FragmentSearchBinding
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,18 +22,20 @@ class SearchFragment : BaseFragment() {
     }
 
     private lateinit var disposables: CompositeDisposable
+    private lateinit var binding: FragmentSearchBinding
 
     @Inject
     lateinit var gitHubRepository: GitHubRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         disposables = CompositeDisposable()
-        return inflater.inflate(R.layout.fragment_search, container, false)
+        binding = FragmentSearchBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView(view)
+        setupRecyclerView()
     }
 
     override fun onDestroyView() {
@@ -42,11 +43,10 @@ class SearchFragment : BaseFragment() {
         super.onDestroyView()
     }
 
-    private fun setupRecyclerView(view: View) {
+    private fun setupRecyclerView() {
         val adapter = RepoAdapter()
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
 
         val query = "CardStackView"
         appStore.observable()

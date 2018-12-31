@@ -4,9 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import com.yuyakaido.android.reduxkit.sample.BuildConfig
-import com.yuyakaido.android.reduxkit.sample.R
+import com.yuyakaido.android.reduxkit.sample.databinding.ActivityLaunchAuthorizeBinding
 
 class LaunchAuthorizeActivity : BaseActivity() {
 
@@ -16,15 +15,16 @@ class LaunchAuthorizeActivity : BaseActivity() {
         }
     }
 
+    private val binding by lazy { ActivityLaunchAuthorizeBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_launch_authorize)
+        setContentView(binding.root)
         setupButton()
     }
 
     private fun setupButton() {
-        findViewById<View>(R.id.authorize)
-            .setOnClickListener { authorize() }
+        binding.authorize.setOnClickListener { authorize() }
     }
 
     private fun authorize() {
