@@ -20,10 +20,10 @@ abstract class PresentationModule {
     abstract fun contributeMainActivity(): MainActivity
 
     @ContributesAndroidInjector
-    abstract fun contributeSearchFragment(): SearchFragment
+    abstract fun contributeSearchFragment(): SearchRepositoriesFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeRepositoryFragment(): RepositoryFragment
+    abstract fun contributeRepositoryFragment(): StarredRepositoriesFragment
 
     @ContributesAndroidInjector
     abstract fun contributeProfileFragment(): ProfileFragment

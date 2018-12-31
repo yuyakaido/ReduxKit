@@ -14,16 +14,16 @@ class GitHubRepository @Inject constructor(
         return client.getAccessToken(code)
     }
 
-    fun searchRepositoriesByQuery(query: String): Single<List<Repo>> {
-        return client.searchRepositoriesByQuery(query)
+    fun getSearchedRepositories(query: String): Single<List<Repo>> {
+        return client.getSearchedRepositories(query)
+    }
+
+    fun getStarredRepositories(): Single<List<Repo>> {
+        return client.getStarredRepositories()
     }
 
     fun getUser(): Single<Owner> {
         return client.getUser()
-    }
-
-    fun getRepositories(): Single<List<Repo>> {
-        return client.getRepositories()
     }
 
 }

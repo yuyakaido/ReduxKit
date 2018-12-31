@@ -9,14 +9,14 @@ class MainFragmentViewPagerAdapter(
 ) : FragmentPagerAdapter(manager) {
 
     enum class Page {
-        Search() {
+        SearchRepositories() {
             override fun fragment(): Fragment {
-                return SearchFragment.newInstance()
+                return SearchRepositoriesFragment.newInstance()
             }
         },
-        Repository() {
+        StarredRepositories() {
             override fun fragment(): Fragment {
-                return RepositoryFragment.newInstance()
+                return StarredRepositoriesFragment.newInstance()
             }
         },
         Profile() {

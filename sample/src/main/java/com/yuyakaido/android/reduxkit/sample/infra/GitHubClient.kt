@@ -23,19 +23,19 @@ class GitHubClient @Inject constructor(
             .singleOrError()
     }
 
-    fun searchRepositoriesByQuery(query: String): Single<List<Repo>> {
+    fun getSearchedRepositories(query: String): Single<List<Repo>> {
         return apiService.searchRepositoriesByQuery(query)
             .map { it.items }
             .singleOrError()
     }
 
-    fun getUser(): Single<Owner> {
-        return apiService.getUser()
+    fun getStarredRepositories(): Single<List<Repo>> {
+        return apiService.getStarredRepositories()
             .singleOrError()
     }
 
-    fun getRepositories(): Single<List<Repo>> {
-        return apiService.getRepositories()
+    fun getUser(): Single<Owner> {
+        return apiService.getUser()
             .singleOrError()
     }
 
@@ -59,8 +59,8 @@ class GitHubClient @Inject constructor(
         @GET("user")
         fun getUser(): Observable<Owner>
 
-        @GET("user/repos")
-        fun getRepositories(): Observable<List<Repo>>
+        @GET("user/starred")
+        fun getStarredRepositories(): Observable<List<Repo>>
     }
 
 }

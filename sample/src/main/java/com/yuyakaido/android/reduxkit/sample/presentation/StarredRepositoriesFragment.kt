@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
-import com.yuyakaido.android.reduxkit.sample.databinding.FragmentRepositoryBinding
+import com.yuyakaido.android.reduxkit.sample.databinding.FragmentStarredRepositoriesBinding
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -15,27 +15,27 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class RepositoryFragment : BaseFragment() {
+class StarredRepositoriesFragment : BaseFragment() {
 
     companion object {
-        fun newInstance() = RepositoryFragment()
+        fun newInstance() = StarredRepositoriesFragment()
     }
 
     private lateinit var disposables: CompositeDisposable
-    private lateinit var binding: FragmentRepositoryBinding
+    private lateinit var binding: FragmentStarredRepositoriesBinding
 
     @Inject
     lateinit var gitHubRepository: GitHubRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         disposables = CompositeDisposable()
-        binding = FragmentRepositoryBinding.inflate(inflater)
+        binding = FragmentStarredRepositoriesBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView(view)
+        setupRecyclerView()
     }
 
     override fun onDestroyView() {
@@ -43,7 +43,7 @@ class RepositoryFragment : BaseFragment() {
         super.onDestroyView()
     }
 
-    private fun setupRecyclerView(view: View) {
+    private fun setupRecyclerView() {
         val adapter = RepoAdapter()
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
@@ -56,11 +56,11 @@ class RepositoryFragment : BaseFragment() {
             }
             .addTo(disposables)
 
-        gitHubRepository.getRepositories()
+        gitHubRepository.getStarredRepositories()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { repos ->
-                appStore.dispatch(AppAction.SessionAction.ReplaceOwnRepos(repos))
+                appStore.dispatch(AppAction.SessionAction.ReplaceStarredRepos(repos))
             }
             .addTo(disposables)
     }

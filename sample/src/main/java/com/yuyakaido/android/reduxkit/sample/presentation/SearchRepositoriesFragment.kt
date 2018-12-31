@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
-import com.yuyakaido.android.reduxkit.sample.databinding.FragmentSearchBinding
+import com.yuyakaido.android.reduxkit.sample.databinding.FragmentSearchRepositoriesBinding
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -15,21 +15,21 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class SearchFragment : BaseFragment() {
+class SearchRepositoriesFragment : BaseFragment() {
 
     companion object {
-        fun newInstance() = SearchFragment()
+        fun newInstance() = SearchRepositoriesFragment()
     }
 
     private lateinit var disposables: CompositeDisposable
-    private lateinit var binding: FragmentSearchBinding
+    private lateinit var binding: FragmentSearchRepositoriesBinding
 
     @Inject
     lateinit var gitHubRepository: GitHubRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         disposables = CompositeDisposable()
-        binding = FragmentSearchBinding.inflate(inflater)
+        binding = FragmentSearchRepositoriesBinding.inflate(inflater)
         return binding.root
     }
 
@@ -58,7 +58,7 @@ class SearchFragment : BaseFragment() {
             }
             .addTo(disposables)
 
-        gitHubRepository.searchRepositoriesByQuery(query)
+        gitHubRepository.getSearchedRepositories(query)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { repos ->
