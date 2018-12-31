@@ -67,22 +67,22 @@ class ProfileFragment : BaseFragment() {
             .into(avatar)
         // Login
         val login = view.findViewById<TextView>(R.id.login)
-        login.text = "ID: ${user.login}"
+        login.text = getString(R.string.profile_id, user.login)
         // Name
         val name = view.findViewById<TextView>(R.id.name)
-        name.text = "Name: ${user.name}"
+        name.text = getString(R.string.profile_name, user.name)
         // Bio
         val bio = view.findViewById<TextView>(R.id.bio)
-        bio.text = "Bio: ${user.bio}"
+        bio.text = getString(R.string.profile_bio, user.bio)
         // Company
         val company = view.findViewById<TextView>(R.id.company)
-        company.text = "Company: ${user.company}"
+        company.text = getString(R.string.profile_company, user.company)
         // Location
         val location = view.findViewById<TextView>(R.id.location)
-        location.text = "Location: ${user.location}"
+        location.text = getString(R.string.profile_location, user.location)
         // Blog
         val blog = view.findViewById<TextView>(R.id.blog)
-        blog.text = "Blog: ${user.blog}"
+        blog.text = getString(R.string.profile_blog, user.blog)
     }
 
 }

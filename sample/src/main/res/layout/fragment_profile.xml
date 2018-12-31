@@ -11,12 +11,12 @@
 
     <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="120dp">
 
         <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/avatar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginEnd="24dp"
                 app:riv_corner_radius="16dp"/>
@@ -33,7 +33,9 @@
                     android:id="@+id/login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="ID: yuyakaido"/>
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="@string/profile_id"/>
 
             <TextView
                     android:id="@+id/name"
@@ -41,13 +43,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    tools:text="Name: Yuya Kaido"/>
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="@string/profile_name"/>
 
             <TextView
                     android:id="@+id/bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Bio: Android Engineer"/>
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="@string/profile_bio"/>
 
         </LinearLayout>
 
@@ -59,19 +65,25 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="8dp"
-            tools:text="Company: eureka, Inc."/>
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="@string/profile_company"/>
 
     <TextView
             android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            tools:text="Location: Tokyo, Japan"/>
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="@string/profile_location"/>
 
     <TextView
             android:id="@+id/blog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Blog: http://yuyakaido.hatenablog.com/"/>
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="@string/profile_blog"/>
 
 </LinearLayout>

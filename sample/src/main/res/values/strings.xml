@@ -2,4 +2,11 @@
 
 <resources>
     <string name="app_name">ReduxKit</string>
+
+    <string name="profile_id">🆔 %1$s</string>
+    <string name="profile_name">👈 %1$s</string>
+    <string name="profile_bio">😎 %1$s</string>
+    <string name="profile_company">🏢 %1$s</string>
+    <string name="profile_location">📍 %1$s</string>
+    <string name="profile_blog">📝 %1$s</string>
 </resources>
