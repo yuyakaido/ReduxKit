@@ -7,5 +7,6 @@ import com.yuyakaido.android.reduxkit.sample.misc.Pack
 
 data class SessionState(
     val user: Pack<Owner?> = Pack(null),
-    val repos: List<Repo> = emptyList()
+    val ownRepos: List<Repo> = emptyList(),
+    val searchedRepos: MutableMap<String, List<Repo>> = mutableMapOf()
 ) : StateType

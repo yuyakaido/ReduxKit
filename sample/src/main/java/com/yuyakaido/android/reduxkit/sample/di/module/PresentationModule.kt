@@ -23,6 +23,9 @@ abstract class PresentationModule {
     abstract fun contributeSearchFragment(): SearchFragment
 
     @ContributesAndroidInjector
+    abstract fun contributeRepositoryFragment(): RepositoryFragment
+
+    @ContributesAndroidInjector
     abstract fun contributeProfileFragment(): ProfileFragment
 
 }

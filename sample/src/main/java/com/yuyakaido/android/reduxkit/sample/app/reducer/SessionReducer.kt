@@ -11,8 +11,13 @@ object SessionReducer : ReducerType<SessionState, AppAction.SessionAction> {
             is AppAction.SessionAction.ReplaceUser -> {
                 state.copy(user = state.user.copy(value = action.user))
             }
-            is AppAction.SessionAction.ReplaceRepos -> {
-                state.copy(repos = action.repos)
+            is AppAction.SessionAction.ReplaceOwnRepos -> {
+                state.copy(ownRepos = action.repos)
+            }
+            is AppAction.SessionAction.ReplaceSearchedRepos -> {
+                state.copy(
+                    searchedRepos = state.searchedRepos.apply { put(action.query, action.repos) }
+                )
             }
         }
     }

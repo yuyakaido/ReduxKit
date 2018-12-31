@@ -14,6 +14,11 @@ class MainFragmentViewPagerAdapter(
                 return SearchFragment.newInstance()
             }
         },
+        Repository() {
+            override fun fragment(): Fragment {
+                return RepositoryFragment.newInstance()
+            }
+        },
         Profile() {
             override fun fragment(): Fragment {
                 return ProfileFragment.newInstance()

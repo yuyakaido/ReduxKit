@@ -16,10 +16,10 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class SearchFragment : BaseFragment() {
+class RepositoryFragment : BaseFragment() {
 
     companion object {
-        fun newInstance() = SearchFragment()
+        fun newInstance() = RepositoryFragment()
     }
 
     private lateinit var disposables: CompositeDisposable
@@ -29,7 +29,7 @@ class SearchFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         disposables = CompositeDisposable()
-        return inflater.inflate(R.layout.fragment_search, container, false)
+        return inflater.inflate(R.layout.fragment_repository, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,21 +48,19 @@ class SearchFragment : BaseFragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
-        val query = "CardStackView"
         appStore.observable()
-            .map { it.session.searchedRepos }
-            .map { it.getOrElse(query) { emptyList() } }
+            .map { it.session.ownRepos }
             .subscribeBy { repos ->
                 adapter.setRepos(repos)
                 adapter.notifyDataSetChanged()
             }
             .addTo(disposables)
 
-        gitHubRepository.searchRepositoriesByQuery(query)
+        gitHubRepository.getRepositories()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy { repos ->
-                appStore.dispatch(AppAction.SessionAction.ReplaceSearchedRepos(query, repos))
+                appStore.dispatch(AppAction.SessionAction.ReplaceOwnRepos(repos))
             }
             .addTo(disposables)
     }

@@ -22,4 +22,8 @@ class GitHubRepository @Inject constructor(
         return client.getUser()
     }
 
+    fun getRepositories(): Single<List<Repo>> {
+        return client.getRepositories()
+    }
+
 }

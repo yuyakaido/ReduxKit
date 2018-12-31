@@ -34,6 +34,11 @@ class GitHubClient @Inject constructor(
             .singleOrError()
     }
 
+    fun getRepositories(): Single<List<Repo>> {
+        return apiService.getRepositories()
+            .singleOrError()
+    }
+
     interface GitHubAuthService {
         @FormUrlEncoded
         @Headers("Accept: application/json")
@@ -53,6 +58,9 @@ class GitHubClient @Inject constructor(
 
         @GET("user")
         fun getUser(): Observable<Owner>
+
+        @GET("user/repos")
+        fun getRepositories(): Observable<List<Repo>>
     }
 
 }
