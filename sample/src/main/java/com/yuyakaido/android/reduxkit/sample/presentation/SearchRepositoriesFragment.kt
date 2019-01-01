@@ -50,10 +50,9 @@ class SearchRepositoriesFragment : BaseFragment() {
 
         val query = "CardStackView"
         appStore.observable()
-            .map { it.session.searchedRepos }
-            .map { it.getOrElse(query) { emptyList() } }
-            .subscribeBy { repos ->
-                adapter.setRepos(repos)
+            .map { it.session.toSearchRepoState() }
+            .subscribeBy { state ->
+                adapter.setRepos(state.repos)
                 adapter.notifyDataSetChanged()
             }
             .addTo(disposables)

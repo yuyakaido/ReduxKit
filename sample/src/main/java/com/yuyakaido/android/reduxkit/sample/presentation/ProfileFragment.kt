@@ -47,8 +47,8 @@ class ProfileFragment : BaseFragment() {
 
     private fun setup() {
         appStore.observable()
-            .filter { it.session.user.hasValue() }
-            .map { it.session.user.value }
+            .filter { it.session.domain.user.hasValue() }
+            .map { it.session.domain.user.value }
             .cast(Owner::class.java)
             .subscribeBy { user -> setupProfile(user) }
             .addTo(disposables)

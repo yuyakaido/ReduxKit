@@ -49,9 +49,9 @@ class StarredRepositoriesFragment : BaseFragment() {
         binding.recyclerView.adapter = adapter
 
         appStore.observable()
-            .map { it.session.ownRepos }
-            .subscribeBy { repos ->
-                adapter.setRepos(repos)
+            .map { it.session.toStarredRepoState() }
+            .subscribeBy { state ->
+                adapter.setRepos(state.repos)
                 adapter.notifyDataSetChanged()
             }
             .addTo(disposables)
