@@ -49,7 +49,7 @@ class StarredRepositoriesFragment : BaseFragment() {
         binding.recyclerView.adapter = adapter
 
         appStore.observable()
-            .map { it.session.toStarredRepoState() }
+            .map { it.session.toStarredReposState() }
             .subscribeBy { state ->
                 adapter.setRepos(state.repos)
                 adapter.notifyDataSetChanged()
@@ -59,9 +59,7 @@ class StarredRepositoriesFragment : BaseFragment() {
         gitHubRepository.getStarredRepositories()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { repos ->
-                appStore.dispatch(AppAction.SessionAction.ReplaceStarredRepos(repos))
-            }
+            .subscribeBy { appStore.dispatch(AppAction.SessionAction.ReplaceStarredRepos(it)) }
             .addTo(disposables)
     }
 

@@ -50,7 +50,7 @@ class SearchRepositoriesFragment : BaseFragment() {
 
         val query = "CardStackView"
         appStore.observable()
-            .map { it.session.toSearchRepoState() }
+            .map { it.session.toSearchedReposState() }
             .subscribeBy { state ->
                 adapter.setRepos(state.repos)
                 adapter.notifyDataSetChanged()
@@ -60,9 +60,7 @@ class SearchRepositoriesFragment : BaseFragment() {
         gitHubRepository.getSearchedRepositories(query)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { repos ->
-                appStore.dispatch(AppAction.SessionAction.ReplaceSearchedRepos(query, repos))
-            }
+            .subscribeBy { appStore.dispatch(AppAction.SessionAction.ReplaceSearchedRepos(query, it)) }
             .addTo(disposables)
     }
 
