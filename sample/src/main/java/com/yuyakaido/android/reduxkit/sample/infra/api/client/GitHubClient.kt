@@ -1,7 +1,13 @@
-package com.yuyakaido.android.reduxkit.sample.infra
+package com.yuyakaido.android.reduxkit.sample.infra.api.client
 
 import com.yuyakaido.android.reduxkit.sample.BuildConfig
-import com.yuyakaido.android.reduxkit.sample.domain.*
+import com.yuyakaido.android.reduxkit.sample.domain.AccessToken
+import com.yuyakaido.android.reduxkit.sample.domain.Owner
+import com.yuyakaido.android.reduxkit.sample.domain.Repo
+import com.yuyakaido.android.reduxkit.sample.infra.AccessTokenResponse
+import com.yuyakaido.android.reduxkit.sample.infra.SearchResponse
+import com.yuyakaido.android.reduxkit.sample.infra.api.response.OwnerResponse
+import com.yuyakaido.android.reduxkit.sample.infra.api.response.RepoResponse
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.*
@@ -21,24 +27,25 @@ class GitHubClient @Inject constructor(
             .singleOrError()
     }
 
-    fun getSearchedRepositories(query: String): Single<List<SearchedRepo>> {
+    fun getSearchedRepositories(query: String): Single<List<Repo>> {
         return apiService.searchRepositoriesByQuery(query)
-            .map { response ->
-                response.items.map { repo ->
-                    SearchedRepo(repo, false)
+            .map { it.toRepos() }
+            .singleOrError()
+    }
+
+    fun getStarredRepositories(): Single<List<Repo>> {
+        return apiService.getStarredRepositories()
+            .map { responses ->
+                responses.map { response ->
+                    response.toRepo(isStarred = true)
                 }
             }
             .singleOrError()
     }
 
-    fun getStarredRepositories(): Single<List<StarredRepo>> {
-        return apiService.getStarredRepositories()
-            .map { responses -> responses.map { repo -> StarredRepo(repo, true) } }
-            .singleOrError()
-    }
-
     fun getUser(): Single<Owner> {
         return apiService.getUser()
+            .map { it.toOwner() }
             .singleOrError()
     }
 
@@ -60,10 +67,10 @@ class GitHubClient @Inject constructor(
         ): Observable<SearchResponse>
 
         @GET("user")
-        fun getUser(): Observable<Owner>
+        fun getUser(): Observable<OwnerResponse>
 
         @GET("user/starred")
-        fun getStarredRepositories(): Observable<List<Repo>>
+        fun getStarredRepositories(): Observable<List<RepoResponse>>
     }
 
 }

@@ -7,11 +7,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.yuyakaido.android.reduxkit.sample.R
-import com.yuyakaido.android.reduxkit.sample.domain.StarrableRepo
+import com.yuyakaido.android.reduxkit.sample.domain.Repo
 
 class RepoAdapter(
-    private var repos: List<StarrableRepo> = emptyList()
+    private val repos: MutableList<Repo> = mutableListOf(),
+    private val listener: OnStarClickListener? = null
 ) : RecyclerView.Adapter<RepoAdapter.ViewHolder>() {
+
+    interface OnStarClickListener {
+        fun onStartClick(repo: Repo)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
         val inflate = LayoutInflater.from(parent.context)
@@ -20,7 +25,8 @@ class RepoAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val repo = repos[position]
-        holder.name.text = repo.repo.fullName
+        holder.name.text = repo.fullName
+        holder.star.setOnClickListener { listener?.onStartClick(repo) }
         if (repo.isStarred) {
             holder.star.setImageResource(R.drawable.ic_star_on_black_24dp)
         } else {
@@ -32,8 +38,9 @@ class RepoAdapter(
         return repos.size
     }
 
-    fun setRepos(repos: List<StarrableRepo>) {
-        this.repos = repos
+    fun setRepos(repos: List<Repo>) {
+        this.repos.clear()
+        this.repos.addAll(repos)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

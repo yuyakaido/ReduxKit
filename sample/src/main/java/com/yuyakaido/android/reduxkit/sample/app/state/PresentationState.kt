@@ -8,13 +8,11 @@ data class PresentationState(
 ) : StateType {
 
     data class SearchedRepo(
-        val id: Long,
-        val isStarred: Boolean
+        val id: Long
     )
 
     data class StarredRepo(
-        val id: Long,
-        val isStarred: Boolean
+        val id: Long
     )
 
 }

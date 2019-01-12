@@ -1,8 +1,6 @@
 package com.yuyakaido.android.reduxkit.sample.app.state
 
 import com.yuyakaido.android.reduxkit.core.StateType
-import com.yuyakaido.android.reduxkit.sample.domain.SearchedRepo
-import com.yuyakaido.android.reduxkit.sample.domain.StarredRepo
 
 data class SessionState(
     val domain: DomainState = DomainState(),
@@ -11,17 +9,13 @@ data class SessionState(
 
     fun toSearchedReposState(): SearchedReposState {
         return SearchedReposState(
-            repos = presentation.searchedRepos.map {
-                SearchedRepo(domain.findRepoById(it.id), it.isStarred)
-            }
+            repos = presentation.searchedRepos.map { domain.findRepoById(it.id) }
         )
     }
 
     fun toStarredReposState(): StarredReposState {
         return StarredReposState(
-            repos = presentation.starredRepos.map {
-                StarredRepo(domain.findRepoById(it.id), it.isStarred)
-            }
+            repos = presentation.starredRepos.map { domain.findRepoById(it.id) }
         )
     }
 

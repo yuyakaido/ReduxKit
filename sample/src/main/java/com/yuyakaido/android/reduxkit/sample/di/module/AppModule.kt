@@ -7,7 +7,7 @@ import com.yuyakaido.android.reduxkit.sample.app.ReduxKit
 import com.yuyakaido.android.reduxkit.sample.di.annotation.AppScope
 import com.yuyakaido.android.reduxkit.sample.di.annotation.GitHubApiRetrofit
 import com.yuyakaido.android.reduxkit.sample.di.annotation.GitHubAuthRetrofit
-import com.yuyakaido.android.reduxkit.sample.infra.GitHubClient
+import com.yuyakaido.android.reduxkit.sample.infra.api.client.GitHubClient
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubInterceptor
 import dagger.Module
 import dagger.Provides

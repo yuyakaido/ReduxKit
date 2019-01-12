@@ -10,23 +10,28 @@ object SessionReducer : ReducerType<SessionState, AppAction.SessionAction> {
 
     override fun reduce(state: SessionState, action: AppAction.SessionAction): SessionState {
         return when (action) {
+            is AppAction.SessionAction.DomainAction -> {
+                state.copy(
+                    domain = DomainReducer.reduce(state = state.domain, action = action)
+                )
+            }
             is AppAction.SessionAction.ReplaceSearchedRepos -> {
                 state.copy(
                     domain = state.domain.copy(
-                        repos = state.domain.repos.apply { putAll(action.repos.associate { it.repo.id to it.repo }) }
+                        repos = state.domain.repos.apply { putAll(action.repos.associate { it.id to it }) }
                     ),
                     presentation = state.presentation.copy(
-                        searchedRepos = action.repos.map { PresentationState.SearchedRepo(it.repo.id, it.isStarred) }
+                        searchedRepos = action.repos.map { PresentationState.SearchedRepo(it.id) }
                     )
                 )
             }
             is AppAction.SessionAction.ReplaceStarredRepos -> {
                 state.copy(
                     domain = state.domain.copy(
-                        repos = state.domain.repos.apply { putAll(action.repos.associate { it.repo.id to it.repo }) }
+                        repos = state.domain.repos.apply { putAll(action.repos.associate { it.id to it }) }
                     ),
                     presentation = state.presentation.copy(
-                        starredRepos = action.repos.map { PresentationState.StarredRepo(it.repo.id, it.isStarred) }
+                        starredRepos = action.repos.map { PresentationState.StarredRepo(it.id) }
                     )
                 )
             }

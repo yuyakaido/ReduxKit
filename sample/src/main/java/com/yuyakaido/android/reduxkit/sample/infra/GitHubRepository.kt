@@ -2,8 +2,8 @@ package com.yuyakaido.android.reduxkit.sample.infra
 
 import com.yuyakaido.android.reduxkit.sample.domain.AccessToken
 import com.yuyakaido.android.reduxkit.sample.domain.Owner
-import com.yuyakaido.android.reduxkit.sample.domain.SearchedRepo
-import com.yuyakaido.android.reduxkit.sample.domain.StarredRepo
+import com.yuyakaido.android.reduxkit.sample.domain.Repo
+import com.yuyakaido.android.reduxkit.sample.infra.api.client.GitHubClient
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -15,11 +15,11 @@ class GitHubRepository @Inject constructor(
         return client.getAccessToken(code)
     }
 
-    fun getSearchedRepositories(query: String): Single<List<SearchedRepo>> {
+    fun getSearchedRepositories(query: String): Single<List<Repo>> {
         return client.getSearchedRepositories(query)
     }
 
-    fun getStarredRepositories(): Single<List<StarredRepo>> {
+    fun getStarredRepositories(): Single<List<Repo>> {
         return client.getStarredRepositories()
     }
 
