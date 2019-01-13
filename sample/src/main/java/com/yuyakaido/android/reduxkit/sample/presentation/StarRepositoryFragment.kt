@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
-import com.yuyakaido.android.reduxkit.sample.databinding.FragmentSearchRepositoriesBinding
+import com.yuyakaido.android.reduxkit.sample.databinding.FragmentStarRepositoryBinding
 import com.yuyakaido.android.reduxkit.sample.domain.Repo
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,21 +16,21 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class SearchRepositoriesFragment : BaseFragment(), RepoAdapter.OnStarClickListener {
+class StarRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener {
 
     companion object {
-        fun newInstance() = SearchRepositoriesFragment()
+        fun newInstance() = StarRepositoryFragment()
     }
 
     private lateinit var disposables: CompositeDisposable
-    private lateinit var binding: FragmentSearchRepositoriesBinding
+    private lateinit var binding: FragmentStarRepositoryBinding
 
     @Inject
     lateinit var gitHubRepository: GitHubRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         disposables = CompositeDisposable()
-        binding = FragmentSearchRepositoriesBinding.inflate(inflater)
+        binding = FragmentStarRepositoryBinding.inflate(inflater)
         return binding.root
     }
 
@@ -69,19 +69,18 @@ class SearchRepositoriesFragment : BaseFragment(), RepoAdapter.OnStarClickListen
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 
-        val query = "CardStackView"
         appStore.observable()
-            .map { it.session.toSearchedReposState() }
+            .map { it.session.toStarredReposState() }
             .subscribeBy { state ->
                 adapter.setRepos(state.repos)
                 adapter.notifyDataSetChanged()
             }
             .addTo(disposables)
 
-        gitHubRepository.getSearchedRepositories(query)
+        gitHubRepository.getStarredRepositories()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { appStore.dispatch(AppAction.SessionAction.ReplaceSearchedRepos(query, it)) }
+            .subscribeBy { appStore.dispatch(AppAction.SessionAction.ReplaceStarredRepos(it)) }
             .addTo(disposables)
     }
 

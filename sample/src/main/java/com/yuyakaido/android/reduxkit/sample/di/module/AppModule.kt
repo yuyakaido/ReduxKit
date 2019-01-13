@@ -2,13 +2,15 @@ package com.yuyakaido.android.reduxkit.sample.di.module
 
 import android.app.Application
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.yuyakaido.android.reduxkit.sample.app.store.AppStore
 import com.yuyakaido.android.reduxkit.sample.app.ReduxKit
+import com.yuyakaido.android.reduxkit.sample.app.store.AppStore
 import com.yuyakaido.android.reduxkit.sample.di.annotation.AppScope
 import com.yuyakaido.android.reduxkit.sample.di.annotation.GitHubApiRetrofit
 import com.yuyakaido.android.reduxkit.sample.di.annotation.GitHubAuthRetrofit
-import com.yuyakaido.android.reduxkit.sample.infra.api.client.GitHubClient
+import com.yuyakaido.android.reduxkit.sample.di.annotation.TrendingRetrofit
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubInterceptor
+import com.yuyakaido.android.reduxkit.sample.infra.api.client.GitHubClient
+import com.yuyakaido.android.reduxkit.sample.infra.api.client.TrendingClient
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -68,6 +70,18 @@ class AppModule {
                 .build()
     }
 
+    @TrendingRetrofit
+    @AppScope
+    @Provides
+    fun provideTrendingRetrofit(client: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .baseUrl("https://github-trending-api.now.sh/")
+            .build()
+    }
+
     @AppScope
     @Provides
     fun provideGitHubAuthService(
@@ -82,6 +96,14 @@ class AppModule {
         @GitHubApiRetrofit retrofit: Retrofit
     ): GitHubClient.GitHubApiService {
         return retrofit.create(GitHubClient.GitHubApiService::class.java)
+    }
+
+    @AppScope
+    @Provides
+    fun provideTrendingService(
+        @TrendingRetrofit retrofit: Retrofit
+    ): TrendingClient.TrendingService {
+        return retrofit.create(TrendingClient.TrendingService::class.java)
     }
 
 }

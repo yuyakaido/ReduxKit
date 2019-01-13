@@ -3,9 +3,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/navigation_discovery"
-            android:title="@string/navigation_discovery"
-            android:icon="@drawable/ic_discovery_black_24dp"
+            android:id="@+id/navigation_trending"
+            android:title="@string/navigation_trending"
+            android:icon="@drawable/ic_trending_black_24dp"
     />
 
     <item
