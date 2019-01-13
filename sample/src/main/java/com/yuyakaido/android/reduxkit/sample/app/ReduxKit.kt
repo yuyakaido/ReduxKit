@@ -1,6 +1,7 @@
 package com.yuyakaido.android.reduxkit.sample.app
 
 import com.facebook.stetho.Stetho
+import com.yuyakaido.android.reduxkit.sample.app.middleware.LoggerMiddleware
 import com.yuyakaido.android.reduxkit.sample.app.store.AppStore
 import com.yuyakaido.android.reduxkit.sample.di.component.DaggerAppComponent
 import dagger.android.AndroidInjector
@@ -19,10 +20,15 @@ class ReduxKit : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
         initializeStetho()
+        initializeAppStore()
     }
 
     private fun initializeStetho() {
         Stetho.initializeWithDefaults(this)
+    }
+
+    private fun initializeAppStore() {
+        appStore.addMiddleware(LoggerMiddleware())
     }
 
 }
