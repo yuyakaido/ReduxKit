@@ -10,6 +10,7 @@ import com.yuyakaido.android.reduxkit.sample.infra.api.response.OwnerResponse
 import com.yuyakaido.android.reduxkit.sample.infra.api.response.RepoResponse
 import io.reactivex.Observable
 import io.reactivex.Single
+import retrofit2.Response
 import retrofit2.http.*
 import javax.inject.Inject
 
@@ -49,6 +50,22 @@ class GitHubClient @Inject constructor(
             .singleOrError()
     }
 
+    fun starRepo(repo: Repo): Single<Repo> {
+        return apiService.starRepo(
+            owner = repo.owner.login,
+            repo = repo.name)
+            .map { repo.copy(isStarred = true) }
+            .singleOrError()
+    }
+
+    fun unstarRepo(repo: Repo): Single<Repo> {
+        return apiService.unstarRepo(
+            owner = repo.owner.login,
+            repo = repo.name)
+            .map { repo.copy(isStarred = false) }
+            .singleOrError()
+    }
+
     interface GitHubAuthService {
         @FormUrlEncoded
         @Headers("Accept: application/json")
@@ -71,6 +88,18 @@ class GitHubClient @Inject constructor(
 
         @GET("user/starred")
         fun getStarredRepositories(): Observable<List<RepoResponse>>
+
+        @PUT("user/starred/{owner}/{repo}")
+        fun starRepo(
+            @Path("owner") owner: String,
+            @Path("repo") repo: String
+        ): Observable<Response<Unit>>
+
+        @DELETE("user/starred/{owner}/{repo}")
+        fun unstarRepo(
+            @Path("owner") owner: String,
+            @Path("repo") repo: String
+        ): Observable<Response<Unit>>
     }
 
 }

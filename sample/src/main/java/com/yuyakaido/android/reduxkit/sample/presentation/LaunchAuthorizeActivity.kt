@@ -31,6 +31,7 @@ class LaunchAuthorizeActivity : BaseActivity() {
         val uri = Uri.parse("https://github.com/login/oauth/authorize")
             .buildUpon()
             .appendQueryParameter("client_id", BuildConfig.CLIENT_ID)
+            .appendQueryParameter("scope", "user repo")
             .build()
         startActivity(Intent(Intent.ACTION_VIEW, uri))
         finish()

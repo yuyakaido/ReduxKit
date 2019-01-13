@@ -15,7 +15,7 @@ class RepoAdapter(
 ) : RecyclerView.Adapter<RepoAdapter.ViewHolder>() {
 
     interface OnStarClickListener {
-        fun onStartClick(repo: Repo)
+        fun onStarClick(repo: Repo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
@@ -26,7 +26,7 @@ class RepoAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val repo = repos[position]
         holder.name.text = repo.fullName
-        holder.star.setOnClickListener { listener?.onStartClick(repo) }
+        holder.star.setOnClickListener { listener?.onStarClick(repo) }
         if (repo.isStarred) {
             holder.star.setImageResource(R.drawable.ic_star_on_black_24dp)
         } else {

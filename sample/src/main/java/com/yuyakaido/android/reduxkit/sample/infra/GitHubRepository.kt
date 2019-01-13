@@ -27,4 +27,12 @@ class GitHubRepository @Inject constructor(
         return client.getUser()
     }
 
+    fun starRepo(repo: Repo): Single<Repo> {
+        return client.starRepo(repo)
+    }
+
+    fun unstarRepo(repo: Repo): Single<Repo> {
+        return client.unstarRepo(repo)
+    }
+
 }

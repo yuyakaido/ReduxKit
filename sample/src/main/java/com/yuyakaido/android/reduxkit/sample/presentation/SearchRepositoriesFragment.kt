@@ -44,16 +44,28 @@ class SearchRepositoriesFragment : BaseFragment(), RepoAdapter.OnStarClickListen
         super.onDestroyView()
     }
 
-    override fun onStartClick(repo: Repo) {
+    override fun onStarClick(repo: Repo) {
         if (repo.isStarred) {
-            appStore.dispatch(AppAction.SessionAction.DomainAction.UnstarRepo(repo))
+            gitHubRepository.unstarRepo(repo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy {
+                    appStore.dispatch(AppAction.SessionAction.DomainAction.UnstarRepo(it))
+                }
+                .addTo(disposables)
         } else {
-            appStore.dispatch(AppAction.SessionAction.DomainAction.StarRepo(repo))
+            gitHubRepository.starRepo(repo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy {
+                    appStore.dispatch(AppAction.SessionAction.DomainAction.StarRepo(it))
+                }
+                .addTo(disposables)
         }
     }
 
     private fun setupRecyclerView() {
-        val adapter = RepoAdapter()
+        val adapter = RepoAdapter(listener = this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 

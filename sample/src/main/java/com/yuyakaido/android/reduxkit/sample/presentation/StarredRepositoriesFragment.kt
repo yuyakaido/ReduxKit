@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
 import com.yuyakaido.android.reduxkit.sample.databinding.FragmentStarredRepositoriesBinding
+import com.yuyakaido.android.reduxkit.sample.domain.Repo
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -15,7 +16,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class StarredRepositoriesFragment : BaseFragment() {
+class StarredRepositoriesFragment : BaseFragment(), RepoAdapter.OnStarClickListener {
 
     companion object {
         fun newInstance() = StarredRepositoriesFragment()
@@ -43,8 +44,28 @@ class StarredRepositoriesFragment : BaseFragment() {
         super.onDestroyView()
     }
 
+    override fun onStarClick(repo: Repo) {
+        if (repo.isStarred) {
+            gitHubRepository.unstarRepo(repo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy {
+                    appStore.dispatch(AppAction.SessionAction.DomainAction.UnstarRepo(it))
+                }
+                .addTo(disposables)
+        } else {
+            gitHubRepository.starRepo(repo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy {
+                    appStore.dispatch(AppAction.SessionAction.DomainAction.StarRepo(it))
+                }
+                .addTo(disposables)
+        }
+    }
+
     private fun setupRecyclerView() {
-        val adapter = RepoAdapter()
+        val adapter = RepoAdapter(listener = this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 
