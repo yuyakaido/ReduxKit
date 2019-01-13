@@ -3,8 +3,6 @@ package com.yuyakaido.android.reduxkit.sample.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.view.ViewPager
-import com.yuyakaido.android.reduxkit.sample.R
 import com.yuyakaido.android.reduxkit.sample.databinding.ActivityMainBinding
 import com.yuyakaido.android.reduxkit.server.DevToolServer
 import io.reactivex.disposables.CompositeDisposable
@@ -27,6 +25,7 @@ class MainActivity : BaseActivity() {
         setContentView(binding.root)
         setupDevToolServer()
         setupViewPager()
+        setupBottomNavigationView()
     }
 
     override fun onDestroy() {
@@ -40,7 +39,16 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupViewPager() {
+        binding.viewPager.offscreenPageLimit = MainFragmentViewPagerAdapter.Page.values().size - 1
         binding.viewPager.adapter = MainFragmentViewPagerAdapter(supportFragmentManager)
+    }
+
+    private fun setupBottomNavigationView() {
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener {
+            val page = MainFragmentViewPagerAdapter.Page.fromMenuId(it.itemId)
+            binding.viewPager.currentItem = page.ordinal
+            return@setOnNavigationItemSelectedListener true
+        }
     }
 
 }

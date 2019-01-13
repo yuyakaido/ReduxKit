@@ -3,6 +3,10 @@
 <resources>
     <string name="app_name">ReduxKit</string>
 
+    <string name="navigation_discovery">Discovery</string>
+    <string name="navigation_star">Star</string>
+    <string name="navigation_profile">Profile</string>
+
     <string name="profile_id">🆔 %1$s</string>
     <string name="profile_name">👈 %1$s</string>
     <string name="profile_bio">😎 %1$s</string>
