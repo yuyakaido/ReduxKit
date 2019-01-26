@@ -17,6 +17,7 @@ class StarActionCreator @Inject constructor(
 
     fun fetchStarRepositories(): Disposable {
         return repository.getStarredRepositories()
+            .doOnSubscribe { store.dispatch(AppAction.StarAction.RefreshRepos(emptyList())) }
             .doOnSubscribe { store.dispatch(AppAction.StarAction.RefreshLoading(true)) }
             .doOnEvent { _, _ -> store.dispatch(AppAction.StarAction.RefreshLoading(false)) }
             .subscribeOn(Schedulers.io())
