@@ -6,15 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.yuyakaido.android.reduxkit.sample.R
-import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
+import com.yuyakaido.android.reduxkit.sample.app.actioncreator.ProfileActionCreator
 import com.yuyakaido.android.reduxkit.sample.databinding.FragmentProfileBinding
 import com.yuyakaido.android.reduxkit.sample.domain.Owner
-import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment() {
@@ -27,7 +24,7 @@ class ProfileFragment : BaseFragment() {
     private lateinit var binding: FragmentProfileBinding
 
     @Inject
-    lateinit var gitHubRepository: GitHubRepository
+    lateinit var profileActionCreator: ProfileActionCreator
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         disposables = CompositeDisposable()
@@ -53,11 +50,7 @@ class ProfileFragment : BaseFragment() {
             .subscribeBy { user -> setupProfile(user) }
             .addTo(disposables)
 
-        gitHubRepository.getUser()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { user -> appStore.dispatch(AppAction.DomainAction.RefreshUser(user)) }
-            .addTo(disposables)
+        profileActionCreator.fetchUser().addTo(disposables)
     }
 
     private fun setupProfile(user: Owner) {

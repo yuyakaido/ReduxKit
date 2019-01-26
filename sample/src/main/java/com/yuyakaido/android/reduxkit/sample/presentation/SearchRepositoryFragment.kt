@@ -5,15 +5,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
+import com.yuyakaido.android.reduxkit.sample.app.actioncreator.SearchActionCreator
+import com.yuyakaido.android.reduxkit.sample.app.actioncreator.StarActionCreator
 import com.yuyakaido.android.reduxkit.sample.databinding.FragmentSearchRepositoryBinding
 import com.yuyakaido.android.reduxkit.sample.domain.Repo
-import com.yuyakaido.android.reduxkit.sample.infra.GitHubRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener {
@@ -26,7 +24,10 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
     private lateinit var binding: FragmentSearchRepositoryBinding
 
     @Inject
-    lateinit var gitHubRepository: GitHubRepository
+    lateinit var searchActionCreator: SearchActionCreator
+
+    @Inject
+    lateinit var starActionCreator: StarActionCreator
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         disposables = CompositeDisposable()
@@ -48,21 +49,9 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
 
     override fun onStarClick(repo: Repo) {
         if (repo.isStarred) {
-            gitHubRepository.unstarRepo(repo)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy {
-                    appStore.dispatch(AppAction.DomainAction.UnstarRepo(it))
-                }
-                .addTo(disposables)
+            starActionCreator.unstarRepo(repo).addTo(disposables)
         } else {
-            gitHubRepository.starRepo(repo)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy {
-                    appStore.dispatch(AppAction.DomainAction.StarRepo(it))
-                }
-                .addTo(disposables)
+            starActionCreator.starRepo(repo).addTo(disposables)
         }
     }
 
@@ -91,17 +80,7 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
 
     private fun refresh() {
         val query = "CardStackView"
-        gitHubRepository.searchRepositoriesByQuery(query)
-            .doOnSubscribe { appStore.dispatch(AppAction.SearchAction.RefreshRepos(emptyList())) }
-            .doOnSubscribe { appStore.dispatch(AppAction.SearchAction.RefreshLoading(true)) }
-            .doOnEvent { _, _ -> appStore.dispatch(AppAction.SearchAction.RefreshLoading(false)) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { repos ->
-                appStore.dispatch(AppAction.DomainAction.PutRepos(repos))
-                appStore.dispatch(AppAction.SearchAction.RefreshRepos(repos))
-            }
-            .addTo(disposables)
+        searchActionCreator.fetchSearchRepositories(query).addTo(disposables)
     }
 
 }
