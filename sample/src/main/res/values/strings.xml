@@ -3,7 +3,7 @@
 <resources>
     <string name="app_name">ReduxKit</string>
 
-    <string name="navigation_trending">Trending</string>
+    <string name="navigation_search">Search</string>
     <string name="navigation_star">Star</string>
     <string name="navigation_profile">Profile</string>
 

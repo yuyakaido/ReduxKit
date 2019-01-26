@@ -28,7 +28,7 @@ class GitHubClient @Inject constructor(
             .singleOrError()
     }
 
-    fun getSearchedRepositories(query: String): Single<List<Repo>> {
+    fun searchedRepositoriesByQuery(query: String): Single<List<Repo>> {
         return apiService.searchRepositoriesByQuery(query)
             .map { it.toRepos() }
             .singleOrError()

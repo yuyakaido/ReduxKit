@@ -36,7 +36,9 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupSwipeRefreshLayout()
         setupRecyclerView()
+        refresh()
     }
 
     override fun onDestroyView() {
@@ -50,7 +52,7 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy {
-                    appStore.dispatch(AppAction.SessionAction.DomainAction.UnstarRepo(it))
+                    appStore.dispatch(AppAction.DomainAction.UnstarRepo(it))
                 }
                 .addTo(disposables)
         } else {
@@ -58,10 +60,19 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy {
-                    appStore.dispatch(AppAction.SessionAction.DomainAction.StarRepo(it))
+                    appStore.dispatch(AppAction.DomainAction.StarRepo(it))
                 }
                 .addTo(disposables)
         }
+    }
+
+    private fun setupSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.setOnRefreshListener { refresh() }
+
+        appStore.observable()
+            .map { it.toSearchViewState() }
+            .subscribeBy { binding.swipeRefreshLayout.isRefreshing = it.isLoading }
+            .addTo(disposables)
     }
 
     private fun setupRecyclerView() {
@@ -69,19 +80,27 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 
-        val query = "CardStackView"
         appStore.observable()
-            .map { it.session.toSearchedReposState() }
+            .map { it.toSearchViewState() }
             .subscribeBy { state ->
                 adapter.setRepos(state.repos)
                 adapter.notifyDataSetChanged()
             }
             .addTo(disposables)
+    }
 
-        gitHubRepository.getSearchedRepositories(query)
+    private fun refresh() {
+        val query = "CardStackView"
+        gitHubRepository.searchRepositoriesByQuery(query)
+            .doOnSubscribe { appStore.dispatch(AppAction.SearchAction.RefreshRepos(emptyList())) }
+            .doOnSubscribe { appStore.dispatch(AppAction.SearchAction.RefreshLoading(true)) }
+            .doOnEvent { _, _ -> appStore.dispatch(AppAction.SearchAction.RefreshLoading(false)) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { appStore.dispatch(AppAction.SessionAction.ReplaceSearchedRepos(query, it)) }
+            .subscribeBy { repos ->
+                appStore.dispatch(AppAction.DomainAction.PutRepos(repos))
+                appStore.dispatch(AppAction.SearchAction.RefreshRepos(repos))
+            }
             .addTo(disposables)
     }
 

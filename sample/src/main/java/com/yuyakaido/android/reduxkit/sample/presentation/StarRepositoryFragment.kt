@@ -36,7 +36,9 @@ class StarRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupSwipeRefreshLayout()
         setupRecyclerView()
+        refresh()
     }
 
     override fun onDestroyView() {
@@ -49,17 +51,13 @@ class StarRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener {
             gitHubRepository.unstarRepo(repo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy {
-                    appStore.dispatch(AppAction.SessionAction.DomainAction.UnstarRepo(it))
-                }
+                .subscribeBy { appStore.dispatch(AppAction.DomainAction.UnstarRepo(it)) }
                 .addTo(disposables)
         } else {
             gitHubRepository.starRepo(repo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy {
-                    appStore.dispatch(AppAction.SessionAction.DomainAction.StarRepo(it))
-                }
+                .subscribeBy { appStore.dispatch(AppAction.DomainAction.StarRepo(it)) }
                 .addTo(disposables)
         }
     }
@@ -70,17 +68,33 @@ class StarRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener {
         binding.recyclerView.adapter = adapter
 
         appStore.observable()
-            .map { it.session.toStarredReposState() }
+            .map { it.toStarViewState() }
             .subscribeBy { state ->
                 adapter.setRepos(state.repos)
                 adapter.notifyDataSetChanged()
             }
             .addTo(disposables)
+    }
 
+    private fun setupSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.setOnRefreshListener { refresh() }
+
+        appStore.observable()
+            .map { it.toStarViewState() }
+            .subscribeBy { binding.swipeRefreshLayout.isRefreshing = it.isLoading }
+            .addTo(disposables)
+    }
+
+    private fun refresh() {
         gitHubRepository.getStarredRepositories()
+            .doOnSubscribe { appStore.dispatch(AppAction.StarAction.RefreshLoading(true)) }
+            .doOnEvent { _, _ -> appStore.dispatch(AppAction.StarAction.RefreshLoading(false)) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { appStore.dispatch(AppAction.SessionAction.ReplaceStarredRepos(it)) }
+            .subscribeBy { repos ->
+                appStore.dispatch(AppAction.DomainAction.PutRepos(repos))
+                appStore.dispatch(AppAction.StarAction.RefreshRepos(repos))
+            }
             .addTo(disposables)
     }
 

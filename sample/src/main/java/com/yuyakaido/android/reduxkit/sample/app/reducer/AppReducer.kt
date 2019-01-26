@@ -8,9 +8,28 @@ object AppReducer : ReducerType<AppState, AppAction> {
 
     override fun reduce(state: AppState, action: AppAction): AppState {
         return when (action) {
-            is AppAction.SessionAction -> {
+            is AppAction.DomainAction -> {
                 state.copy(
-                    session = SessionReducer.reduce(state.session, action)
+                    domain = DomainReducer.reduce(
+                        state = state.domain,
+                        action = action
+                    )
+                )
+            }
+            is AppAction.SearchAction -> {
+                state.copy(
+                    search = SearchReducer.reduce(
+                        state = state.search,
+                        action = action
+                    )
+                )
+            }
+            is AppAction.StarAction -> {
+                state.copy(
+                    star = StarReducer.reduce(
+                        state = state.star,
+                        action = action
+                    )
                 )
             }
         }

@@ -47,8 +47,8 @@ class ProfileFragment : BaseFragment() {
 
     private fun setup() {
         appStore.observable()
-            .filter { it.session.domain.user.hasValue() }
-            .map { it.session.domain.user.value }
+            .filter { it.domain.user.hasValue() }
+            .map { it.domain.user.value }
             .cast(Owner::class.java)
             .subscribeBy { user -> setupProfile(user) }
             .addTo(disposables)
@@ -56,7 +56,7 @@ class ProfileFragment : BaseFragment() {
         gitHubRepository.getUser()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { user -> appStore.dispatch(AppAction.SessionAction.ReplaceUser(user)) }
+            .subscribeBy { user -> appStore.dispatch(AppAction.DomainAction.RefreshUser(user)) }
             .addTo(disposables)
     }
 

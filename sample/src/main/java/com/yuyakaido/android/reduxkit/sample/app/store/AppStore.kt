@@ -9,6 +9,7 @@ import com.yuyakaido.android.reduxkit.sample.app.reducer.AppReducer
 import com.yuyakaido.android.reduxkit.sample.app.state.AppState
 import com.yuyakaido.android.reduxkit.server.StateProvider
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 class AppStore(
     private val initial: AppState = AppState()
@@ -27,7 +28,7 @@ class AppStore(
     }
 
     override fun observable(): Observable<AppState> {
-        return state
+        return state.observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun addMiddleware(middleware: MiddlewareType<AppState, AppAction>) {

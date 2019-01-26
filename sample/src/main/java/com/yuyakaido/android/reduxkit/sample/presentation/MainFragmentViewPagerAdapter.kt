@@ -12,11 +12,11 @@ class MainFragmentViewPagerAdapter(
     enum class Page(
         private val menuId: Int
     ) {
-        Trending(
-            menuId = R.id.navigation_trending
+        Search(
+            menuId = R.id.navigation_search
         ) {
             override fun fragment(): Fragment {
-                return TrendingRepositoryFragment.newInstance()
+                return SearchRepositoryFragment.newInstance()
             }
         },
         Star(
