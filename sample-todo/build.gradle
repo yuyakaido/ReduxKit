@@ -1,0 +1,25 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.yuyakaido.android.reduxkit.sample"
+        minSdkVersion 14
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    // ReduxKit
+    implementation project(':core')
+    implementation project(':server')
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Support Library
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+}
