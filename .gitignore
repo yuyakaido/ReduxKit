@@ -40,6 +40,7 @@ captures/
 .idea/gradle.xml
 .idea/assetWizardSettings.xml
 .idea/misc.xml
+.idea/runConfigurations.xml
 .idea/dictionaries
 .idea/libraries
 .idea/caches
