@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     setContentView(binding.root)
     setupRecyclerView()
     setupFloatingActionButton()
+    refresh()
   }
 
   override fun onDestroy() {
@@ -49,6 +50,10 @@ class MainActivity : AppCompatActivity() {
 
   private fun getAppStore(): AppStore {
     return (application as ReduxKit).appStore
+  }
+
+  private fun refresh() {
+    getAppStore().dispatch(AppAction.RefreshTodos(Todo.createSampleTodos()))
   }
 
 }
