@@ -7,27 +7,27 @@ import com.yuyakaido.android.reduxkit.sample.misc.Pack
 
 object DomainReducer : ReducerType<DomainState, AppAction.DomainAction> {
 
-    override fun reduce(state: DomainState, action: AppAction.DomainAction): DomainState {
-        return when (action) {
-            is AppAction.DomainAction.RefreshUser -> {
-                state.copy(user = Pack(action.user))
-            }
-            is AppAction.DomainAction.PutRepos -> {
-                state.apply {
-                    state.repos.apply { putAll(action.repos.associate { it.id to it }) }
-                }
-            }
-            is AppAction.DomainAction.StarRepo -> {
-                state.apply {
-                    state.repos[action.repo.id] = action.repo.copy(isStarred = true)
-                }
-            }
-            is AppAction.DomainAction.UnstarRepo -> {
-                state.apply {
-                    state.repos[action.repo.id] = action.repo.copy(isStarred = false)
-                }
-            }
+  override fun reduce(state: DomainState, action: AppAction.DomainAction): DomainState {
+    return when (action) {
+      is AppAction.DomainAction.RefreshUser -> {
+        state.copy(user = Pack(action.user))
+      }
+      is AppAction.DomainAction.PutRepos -> {
+        state.apply {
+          state.repos.apply { putAll(action.repos.associate { it.id to it }) }
         }
+      }
+      is AppAction.DomainAction.StarRepo -> {
+        state.apply {
+          state.repos[action.repo.id] = action.repo.copy(isStarred = true)
+        }
+      }
+      is AppAction.DomainAction.UnstarRepo -> {
+        state.apply {
+          state.repos[action.repo.id] = action.repo.copy(isStarred = false)
+        }
+      }
     }
+  }
 
 }

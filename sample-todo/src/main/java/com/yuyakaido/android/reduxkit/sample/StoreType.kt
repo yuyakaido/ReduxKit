@@ -5,6 +5,6 @@ import com.yuyakaido.android.reduxkit.core.StateType
 import io.reactivex.Observable
 
 interface StoreType<STATE : StateType, ACTION : ActionType> {
-    fun dispatch(action: ACTION)
-    fun observable(): Observable<STATE>
+  fun dispatch(action: ACTION)
+  fun observable(): Observable<STATE>
 }

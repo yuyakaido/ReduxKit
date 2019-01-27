@@ -7,25 +7,25 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class PresentationModule {
 
-    @ContributesAndroidInjector
-    abstract fun contributeLauncherActivity(): LauncherActivity
+  @ContributesAndroidInjector
+  abstract fun contributeLauncherActivity(): LauncherActivity
 
-    @ContributesAndroidInjector
-    abstract fun contributeLaunchAuthorizeActivity(): LaunchAuthorizeActivity
+  @ContributesAndroidInjector
+  abstract fun contributeLaunchAuthorizeActivity(): LaunchAuthorizeActivity
 
-    @ContributesAndroidInjector
-    abstract fun contributeCompleteAuthorizeActivity(): CompleteAuthorizeActivity
+  @ContributesAndroidInjector
+  abstract fun contributeCompleteAuthorizeActivity(): CompleteAuthorizeActivity
 
-    @ContributesAndroidInjector
-    abstract fun contributeMainActivity(): MainActivity
+  @ContributesAndroidInjector
+  abstract fun contributeMainActivity(): MainActivity
 
-    @ContributesAndroidInjector
-    abstract fun contributeSearchRepositoryFragment(): SearchRepositoryFragment
+  @ContributesAndroidInjector
+  abstract fun contributeSearchRepositoryFragment(): SearchRepositoryFragment
 
-    @ContributesAndroidInjector
-    abstract fun contributeStarRepositoryFragment(): StarRepositoryFragment
+  @ContributesAndroidInjector
+  abstract fun contributeStarRepositoryFragment(): StarRepositoryFragment
 
-    @ContributesAndroidInjector
-    abstract fun contributeProfileFragment(): ProfileFragment
+  @ContributesAndroidInjector
+  abstract fun contributeProfileFragment(): ProfileFragment
 
 }

@@ -10,42 +10,42 @@ import com.yuyakaido.android.reduxkit.sample.R
 import com.yuyakaido.android.reduxkit.sample.domain.Repo
 
 class RepoAdapter(
-    private val repos: MutableList<Repo> = mutableListOf(),
-    private val listener: OnStarClickListener? = null
+  private val repos: MutableList<Repo> = mutableListOf(),
+  private val listener: OnStarClickListener? = null
 ) : RecyclerView.Adapter<RepoAdapter.ViewHolder>() {
 
-    interface OnStarClickListener {
-        fun onStarClick(repo: Repo)
-    }
+  interface OnStarClickListener {
+    fun onStarClick(repo: Repo)
+  }
 
-    override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
-        val inflate = LayoutInflater.from(parent.context)
-        return ViewHolder(inflate.inflate(R.layout.item_repo, parent, false))
-    }
+  override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
+    val inflate = LayoutInflater.from(parent.context)
+    return ViewHolder(inflate.inflate(R.layout.item_repo, parent, false))
+  }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val repo = repos[position]
-        holder.name.text = repo.fullName
-        holder.star.setOnClickListener { listener?.onStarClick(repo) }
-        if (repo.isStarred) {
-            holder.star.setImageResource(R.drawable.ic_star_on_black_24dp)
-        } else {
-            holder.star.setImageResource(R.drawable.ic_star_off_black_24dp)
-        }
+  override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    val repo = repos[position]
+    holder.name.text = repo.fullName
+    holder.star.setOnClickListener { listener?.onStarClick(repo) }
+    if (repo.isStarred) {
+      holder.star.setImageResource(R.drawable.ic_star_on_black_24dp)
+    } else {
+      holder.star.setImageResource(R.drawable.ic_star_off_black_24dp)
     }
+  }
 
-    override fun getItemCount(): Int {
-        return repos.size
-    }
+  override fun getItemCount(): Int {
+    return repos.size
+  }
 
-    fun setRepos(repos: List<Repo>) {
-        this.repos.clear()
-        this.repos.addAll(repos)
-    }
+  fun setRepos(repos: List<Repo>) {
+    this.repos.clear()
+    this.repos.addAll(repos)
+  }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val name: TextView = view.findViewById(R.id.name)
-        val star: ImageView = view.findViewById(R.id.star)
-    }
+  class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    val name: TextView = view.findViewById(R.id.name)
+    val star: ImageView = view.findViewById(R.id.star)
+  }
 
 }

@@ -16,51 +16,55 @@ import javax.inject.Inject
 
 class ProfileFragment : BaseFragment() {
 
-    companion object {
-        fun newInstance() = ProfileFragment()
-    }
+  companion object {
+    fun newInstance() = ProfileFragment()
+  }
 
-    private lateinit var disposables: CompositeDisposable
-    private lateinit var binding: FragmentProfileBinding
+  private lateinit var disposables: CompositeDisposable
+  private lateinit var binding: FragmentProfileBinding
 
-    @Inject
-    lateinit var profileActionCreator: ProfileActionCreator
+  @Inject
+  lateinit var profileActionCreator: ProfileActionCreator
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        disposables = CompositeDisposable()
-        binding = FragmentProfileBinding.inflate(inflater)
-        return binding.root
-    }
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    disposables = CompositeDisposable()
+    binding = FragmentProfileBinding.inflate(inflater)
+    return binding.root
+  }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setup()
-    }
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    setup()
+  }
 
-    override fun onDestroyView() {
-        disposables.dispose()
-        super.onDestroyView()
-    }
+  override fun onDestroyView() {
+    disposables.dispose()
+    super.onDestroyView()
+  }
 
-    private fun setup() {
-        appStore.observable()
-            .filter { it.domain.user.hasValue() }
-            .map { it.domain.user.value }
-            .cast(Owner::class.java)
-            .subscribeBy { user -> setupProfile(user) }
-            .addTo(disposables)
+  private fun setup() {
+    appStore.observable()
+      .filter { it.domain.user.hasValue() }
+      .map { it.domain.user.value }
+      .cast(Owner::class.java)
+      .subscribeBy { user -> setupProfile(user) }
+      .addTo(disposables)
 
-        profileActionCreator.fetchUser().addTo(disposables)
-    }
+    profileActionCreator.fetchUser().addTo(disposables)
+  }
 
-    private fun setupProfile(user: Owner) {
-        Glide.with(requireContext()).load(user.avatarUrl).into(binding.avatar)
-        binding.login.text = getString(R.string.profile_id, user.login)
-        binding.name.text = getString(R.string.profile_name, user.name)
-        binding.bio.text = getString(R.string.profile_bio, user.bio)
-        binding.company.text = getString(R.string.profile_company, user.company)
-        binding.location.text = getString(R.string.profile_location, user.location)
-        binding.blog.text = getString(R.string.profile_blog, user.blog)
-    }
+  private fun setupProfile(user: Owner) {
+    Glide.with(requireContext()).load(user.avatarUrl).into(binding.avatar)
+    binding.login.text = getString(R.string.profile_id, user.login)
+    binding.name.text = getString(R.string.profile_name, user.name)
+    binding.bio.text = getString(R.string.profile_bio, user.bio)
+    binding.company.text = getString(R.string.profile_company, user.company)
+    binding.location.text = getString(R.string.profile_location, user.location)
+    binding.blog.text = getString(R.string.profile_blog, user.blog)
+  }
 
 }

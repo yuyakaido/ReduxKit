@@ -12,35 +12,35 @@ import javax.inject.Inject
 
 class CompleteAuthorizeActivity : BaseActivity() {
 
-    private val disposables = CompositeDisposable()
+  private val disposables = CompositeDisposable()
 
-    @Inject
-    lateinit var gitHubRepository: GitHubRepository
+  @Inject
+  lateinit var gitHubRepository: GitHubRepository
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        handleUrlScheme()
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    handleUrlScheme()
+  }
+
+  override fun onDestroy() {
+    disposables.dispose()
+    super.onDestroy()
+  }
+
+  private fun handleUrlScheme() {
+    intent.data?.let { uri ->
+      uri.getQueryParameter("code")?.let { code ->
+        gitHubRepository.getAccessToken(code)
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribeBy { token ->
+            AccessToken.put(this, token)
+            startActivity(MainActivity.createIntent(this))
+            finish()
+          }
+          .addTo(disposables)
+      }
     }
-
-    override fun onDestroy() {
-        disposables.dispose()
-        super.onDestroy()
-    }
-
-    private fun handleUrlScheme() {
-        intent.data?.let { uri ->
-            uri.getQueryParameter("code")?.let { code ->
-                gitHubRepository.getAccessToken(code)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeBy { token ->
-                        AccessToken.put(this, token)
-                        startActivity(MainActivity.createIntent(this))
-                        finish()
-                    }
-                    .addTo(disposables)
-            }
-        }
-    }
+  }
 
 }

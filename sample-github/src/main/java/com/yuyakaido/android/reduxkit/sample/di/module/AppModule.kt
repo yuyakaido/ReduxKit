@@ -20,68 +20,68 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 class AppModule {
 
-    @AppScope
-    @Provides
-    fun provideApplication(application: ReduxKit): Application {
-        return application
-    }
+  @AppScope
+  @Provides
+  fun provideApplication(application: ReduxKit): Application {
+    return application
+  }
 
-    @AppScope
-    @Provides
-    fun provideAppStore(): AppStore {
-        return AppStore()
-    }
+  @AppScope
+  @Provides
+  fun provideAppStore(): AppStore {
+    return AppStore()
+  }
 
-    @AppScope
-    @Provides
-    fun provideOkHttpClient(application: Application): OkHttpClient {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
-        return OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
-            .addInterceptor(GitHubInterceptor(application))
-            .addNetworkInterceptor(StethoInterceptor())
-            .build()
-    }
+  @AppScope
+  @Provides
+  fun provideOkHttpClient(application: Application): OkHttpClient {
+    val httpLoggingInterceptor = HttpLoggingInterceptor()
+    httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
+    return OkHttpClient.Builder()
+      .addInterceptor(httpLoggingInterceptor)
+      .addInterceptor(GitHubInterceptor(application))
+      .addNetworkInterceptor(StethoInterceptor())
+      .build()
+  }
 
-    @GitHubAuthRetrofit
-    @AppScope
-    @Provides
-    fun provideGitHubAuthRetrofit(client: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("https://github.com/login/oauth/")
-                .build()
-    }
+  @GitHubAuthRetrofit
+  @AppScope
+  @Provides
+  fun provideGitHubAuthRetrofit(client: OkHttpClient): Retrofit {
+    return Retrofit.Builder()
+      .client(client)
+      .addConverterFactory(GsonConverterFactory.create())
+      .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+      .baseUrl("https://github.com/login/oauth/")
+      .build()
+  }
 
-    @GitHubApiRetrofit
-    @AppScope
-    @Provides
-    fun provideGitHubApiRetrofit(client: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("https://api.github.com/")
-                .build()
-    }
+  @GitHubApiRetrofit
+  @AppScope
+  @Provides
+  fun provideGitHubApiRetrofit(client: OkHttpClient): Retrofit {
+    return Retrofit.Builder()
+      .client(client)
+      .addConverterFactory(GsonConverterFactory.create())
+      .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+      .baseUrl("https://api.github.com/")
+      .build()
+  }
 
-    @AppScope
-    @Provides
-    fun provideGitHubAuthService(
-        @GitHubAuthRetrofit retrofit: Retrofit
-    ): GitHubClient.GitHubAuthService {
-        return retrofit.create(GitHubClient.GitHubAuthService::class.java)
-    }
+  @AppScope
+  @Provides
+  fun provideGitHubAuthService(
+    @GitHubAuthRetrofit retrofit: Retrofit
+  ): GitHubClient.GitHubAuthService {
+    return retrofit.create(GitHubClient.GitHubAuthService::class.java)
+  }
 
-    @AppScope
-    @Provides
-    fun provideGitHubApiService(
-        @GitHubApiRetrofit retrofit: Retrofit
-    ): GitHubClient.GitHubApiService {
-        return retrofit.create(GitHubClient.GitHubApiService::class.java)
-    }
+  @AppScope
+  @Provides
+  fun provideGitHubApiService(
+    @GitHubApiRetrofit retrofit: Retrofit
+  ): GitHubClient.GitHubApiService {
+    return retrofit.create(GitHubClient.GitHubApiService::class.java)
+  }
 
 }

@@ -6,20 +6,20 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 class GitHubInterceptor(
-    private val application: Application
+  private val application: Application
 ) : Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val accessToken = AccessToken.getOrNull(application)
-        val originalRequest = chain.request()
-        return if (accessToken == null) {
-            chain.proceed(originalRequest)
-        } else {
-            val newRequest = originalRequest.newBuilder()
-                .addHeader("Authorization", "token ${accessToken.value}")
-                .build()
-            chain.proceed(newRequest)
-        }
+  override fun intercept(chain: Interceptor.Chain): Response {
+    val accessToken = AccessToken.getOrNull(application)
+    val originalRequest = chain.request()
+    return if (accessToken == null) {
+      chain.proceed(originalRequest)
+    } else {
+      val newRequest = originalRequest.newBuilder()
+        .addHeader("Authorization", "token ${accessToken.value}")
+        .build()
+      chain.proceed(newRequest)
     }
+  }
 
 }

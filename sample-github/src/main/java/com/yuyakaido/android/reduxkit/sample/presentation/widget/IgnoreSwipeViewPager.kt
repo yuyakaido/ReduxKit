@@ -6,16 +6,16 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 
 class IgnoreSwipeViewPager @JvmOverloads constructor(
-    context: Context,
-    attr: AttributeSet? = null
+  context: Context,
+  attr: AttributeSet? = null
 ) : ViewPager(context, attr) {
 
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        return false
-    }
+  override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+    return false
+  }
 
-    override fun onTouchEvent(ev: MotionEvent?): Boolean {
-        return false
-    }
+  override fun onTouchEvent(ev: MotionEvent?): Boolean {
+    return false
+  }
 
 }

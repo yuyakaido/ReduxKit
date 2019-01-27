@@ -10,25 +10,25 @@ import javax.inject.Inject
 
 class ReduxKit : DaggerApplication() {
 
-    @Inject
-    lateinit var appStore: AppStore
+  @Inject
+  lateinit var appStore: AppStore
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder().create(this)
-    }
+  override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+    return DaggerAppComponent.builder().create(this)
+  }
 
-    override fun onCreate() {
-        super.onCreate()
-        initializeStetho()
-        initializeAppStore()
-    }
+  override fun onCreate() {
+    super.onCreate()
+    initializeStetho()
+    initializeAppStore()
+  }
 
-    private fun initializeStetho() {
-        Stetho.initializeWithDefaults(this)
-    }
+  private fun initializeStetho() {
+    Stetho.initializeWithDefaults(this)
+  }
 
-    private fun initializeAppStore() {
-        appStore.addMiddleware(LoggerMiddleware())
-    }
+  private fun initializeAppStore() {
+    appStore.addMiddleware(LoggerMiddleware())
+  }
 
 }

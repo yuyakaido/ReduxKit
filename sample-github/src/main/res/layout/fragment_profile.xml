@@ -3,90 +3,90 @@
 <layout>
 
     <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="24dp">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
 
         <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="120dp">
+            android:layout_width="match_parent"
+            android:layout_height="120dp">
 
             <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/avatar"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp"
-                    app:riv_corner_radius="16dp"/>
+                android:id="@+id/avatar"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                app:riv_corner_radius="16dp"/>
 
             <LinearLayout
-                    android:orientation="vertical"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/avatar"
+                android:layout_toEndOf="@+id/avatar"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/login"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/avatar"
-                    android:layout_toEndOf="@+id/avatar"
-                    android:gravity="center_vertical">
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="@string/profile_id"/>
 
                 <TextView
-                        android:id="@+id/login"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        tools:text="@string/profile_id"/>
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="@string/profile_name"/>
 
                 <TextView
-                        android:id="@+id/name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        tools:text="@string/profile_name"/>
-
-                <TextView
-                        android:id="@+id/bio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        tools:text="@string/profile_bio"/>
+                    android:id="@+id/bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="@string/profile_bio"/>
 
             </LinearLayout>
 
         </RelativeLayout>
 
         <TextView
-                android:id="@+id/company"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="8dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="@string/profile_company"/>
+            android:id="@+id/company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="@string/profile_company"/>
 
         <TextView
-                android:id="@+id/location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="@string/profile_location"/>
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="@string/profile_location"/>
 
         <TextView
-                android:id="@+id/blog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="@string/profile_blog"/>
+            android:id="@+id/blog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="@string/profile_blog"/>
 
     </LinearLayout>
 
