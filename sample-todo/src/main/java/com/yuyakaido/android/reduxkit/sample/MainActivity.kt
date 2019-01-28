@@ -43,8 +43,9 @@ class MainActivity : AppCompatActivity() {
   private fun setupFloatingActionButton() {
     binding.floatingActionButton
       .setOnClickListener {
-        val todo = Todo(title = "🎉 NewTask!")
-        getAppStore().dispatch(AppAction.AddTodo(todo))
+        val todo = Todo("🎉 NewTask!")
+        val action = AppAction.AddTodo(todo)
+        getAppStore().dispatch(action)
       }
   }
 

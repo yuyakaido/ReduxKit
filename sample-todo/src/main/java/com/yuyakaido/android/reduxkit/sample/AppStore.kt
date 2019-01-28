@@ -6,18 +6,18 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 class AppStore(
-  private val initial: AppState = AppState()
+  private val initialState: AppState = AppState()
 ) : StoreType<AppState, AppAction> {
 
-  private val state = BehaviorRelay.createDefault(initial)
+  private val state = BehaviorRelay.createDefault(initialState)
   private val middlewares = mutableListOf<MiddlewareType<AppState, AppAction>>()
 
   override fun dispatch(action: AppAction) {
-    state.value?.let { current ->
-      middlewares.forEach { middleware -> middleware.before(current, action) }
-      val next = AppReducer.reduce(current, action)
-      state.accept(next)
-      middlewares.forEach { middleware -> middleware.after(next, action) }
+    state.value?.let { currentState ->
+      middlewares.forEach { middleware -> middleware.before(currentState, action) }
+      val nextState = AppReducer.reduce(currentState, action)
+      state.accept(nextState)
+      middlewares.forEach { middleware -> middleware.after(nextState, action) }
     }
   }
 
