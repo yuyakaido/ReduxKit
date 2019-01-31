@@ -1,1 +1,1 @@
-include ':sample-github', ':sample-todo', ':core', ':server'
+include 'samples:github', 'samples:todo', ':core', ':server'
