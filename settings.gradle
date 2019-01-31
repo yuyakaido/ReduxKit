@@ -1,1 +1,1 @@
-include 'samples:github', 'samples:todo', ':core', ':server'
+include ':core', 'middlewares:logger', ':server', 'samples:github', 'samples:todo'

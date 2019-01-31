@@ -1,7 +1,7 @@
 package com.yuyakaido.android.reduxkit.sample.app
 
 import com.facebook.stetho.Stetho
-import com.yuyakaido.android.reduxkit.sample.app.middleware.LoggerMiddleware
+import com.yuyakaido.android.reduxkit.middleware.logger.LoggerMiddleware
 import com.yuyakaido.android.reduxkit.sample.app.store.AppStore
 import com.yuyakaido.android.reduxkit.sample.di.component.DaggerAppComponent
 import dagger.android.AndroidInjector

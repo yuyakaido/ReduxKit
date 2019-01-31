@@ -18,6 +18,7 @@ android {
 dependencies {
     // ReduxKit
     implementation project(':core')
+    implementation project(':middlewares:logger')
     implementation project(':server')
 
     // Kotlin
