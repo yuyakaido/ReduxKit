@@ -1,9 +1,7 @@
-package com.yuyakaido.android.reduxkit.sample.app.middleware
+package com.yuyakaido.android.reduxkit.sample
 
 import android.util.Log
 import com.yuyakaido.android.reduxkit.core.MiddlewareType
-import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
-import com.yuyakaido.android.reduxkit.sample.app.state.AppState
 import io.reactivex.Single
 
 class LoggerMiddleware : MiddlewareType<AppState, AppAction> {
