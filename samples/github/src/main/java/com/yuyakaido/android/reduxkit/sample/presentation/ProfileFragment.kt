@@ -54,7 +54,7 @@ class ProfileFragment : BaseFragment() {
       .subscribeBy { user -> setupProfile(user) }
       .addTo(disposables)
 
-    appStore.dispatch(profileActionCreator.fetchUser()).addTo(disposables)
+    appStore.dispatch(profileActionCreator.fetchUser())
   }
 
   private fun setupProfile(user: Owner) {

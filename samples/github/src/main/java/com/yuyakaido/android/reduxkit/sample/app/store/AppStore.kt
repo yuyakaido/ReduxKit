@@ -5,7 +5,6 @@ import com.google.gson.JsonObject
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.yuyakaido.android.reduxkit.core.ActionType
 import com.yuyakaido.android.reduxkit.core.MiddlewareType
-import com.yuyakaido.android.reduxkit.core.StateType
 import com.yuyakaido.android.reduxkit.core.StoreType
 import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
 import com.yuyakaido.android.reduxkit.sample.app.reducer.AppReducer
@@ -14,8 +13,6 @@ import com.yuyakaido.android.reduxkit.server.StateProvider
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
 
 class AppStore(
   private val initial: AppState = AppState()
@@ -24,8 +21,8 @@ class AppStore(
   private val state = BehaviorRelay.createDefault(initial)
   private val middlewares = mutableListOf<MiddlewareType>()
 
-  override fun dispatch(action: ActionType): Disposable {
-    return state.value?.let { currentState ->
+  override fun dispatch(action: ActionType) {
+    state.value?.let { currentState ->
       Single.just(action)
         .flatMap { originalAction ->
           var stream = Single.just(originalAction)
@@ -43,7 +40,7 @@ class AppStore(
           return@flatMap stream
         }
         .subscribe()
-    } ?: Disposables.disposed()
+    }
   }
 
   private fun update(action: ActionType) {

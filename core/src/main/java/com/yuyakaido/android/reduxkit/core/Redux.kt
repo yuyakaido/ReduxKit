@@ -2,7 +2,6 @@ package com.yuyakaido.android.reduxkit.core
 
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.disposables.Disposable
 
 interface StateType
 
@@ -13,7 +12,7 @@ interface ReducerType<STATE : StateType, ACTION : ActionType> {
 }
 
 interface StoreType<STATE : StateType> {
-  fun dispatch(action: ActionType): Disposable
+  fun dispatch(action: ActionType)
   fun observable(): Observable<out STATE>
   fun addMiddleware(middleware: MiddlewareType)
   fun removeMiddleware(middleware: MiddlewareType)

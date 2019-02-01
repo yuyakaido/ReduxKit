@@ -5,10 +5,7 @@ import com.yuyakaido.android.reduxkit.core.ActionType
 import com.yuyakaido.android.reduxkit.core.MiddlewareType
 import com.yuyakaido.android.reduxkit.core.StoreType
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
 
 class AppStore(
   private val initialState: AppState = AppState()
@@ -17,32 +14,11 @@ class AppStore(
   private val state = BehaviorRelay.createDefault(initialState)
   private val middlewares = mutableListOf<MiddlewareType>()
 
-  override fun dispatch(action: ActionType): Disposable {
-    return state.value?.let { currentState ->
-      Single.just(action)
-        .flatMap { originalAction ->
-          var stream = Single.just(originalAction)
-          middlewares.forEach { middleware ->
-            stream = stream.flatMap { currentAction -> middleware.before(currentState, currentAction) }
-          }
-          return@flatMap stream
-        }
-        .doOnSuccess { update(it) }
-        .flatMap { originalAction ->
-          var stream = Single.just(originalAction)
-          middlewares.forEach { middleware ->
-            stream = stream.flatMap { currentAction -> middleware.after(currentState, currentAction) }
-          }
-          return@flatMap stream
-        }
-        .subscribe()
-    } ?: Disposables.disposed()
-  }
-
-  private fun update(action: ActionType) {
+  override fun dispatch(action: ActionType) {
     state.value?.let { currentState ->
-      val nextState = AppReducer.reduce(currentState, action as AppAction)
-      state.accept(nextState)
+      middlewares.forEach { it.before(currentState, action) }
+      state.accept(currentState)
+      middlewares.forEach { it.after(currentState, action) }
     }
   }
 
