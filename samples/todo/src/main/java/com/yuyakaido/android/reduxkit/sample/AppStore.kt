@@ -17,7 +17,8 @@ class AppStore(
   override fun dispatch(action: ActionType) {
     state.value?.let { currentState ->
       middlewares.forEach { it.before(currentState, action) }
-      state.accept(currentState)
+      val nextState = AppReducer.reduce(currentState, action as AppAction)
+      state.accept(nextState)
       middlewares.forEach { it.after(currentState, action) }
     }
   }

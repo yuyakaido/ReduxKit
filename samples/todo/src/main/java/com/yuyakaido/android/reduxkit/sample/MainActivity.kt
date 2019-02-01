@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
       .setOnClickListener {
         val todo = Todo("🎉 NewTask!")
         val action = AppAction.AddTodo(todo)
-        getAppStore().dispatch(action).addTo(disposables)
+        getAppStore().dispatch(action)
       }
   }
 
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun refresh() {
-    getAppStore().dispatch(AppAction.RefreshTodos(Todo.createSampleTodos())).addTo(disposables)
+    getAppStore().dispatch(AppAction.RefreshTodos(Todo.createSampleTodos()))
   }
 
 }
