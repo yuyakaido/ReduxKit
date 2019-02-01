@@ -2,6 +2,8 @@ package com.yuyakaido.android.reduxkit.sample.app
 
 import com.facebook.stetho.Stetho
 import com.yuyakaido.android.reduxkit.middleware.logger.LoggerMiddleware
+import com.yuyakaido.android.reduxkit.middleware.thunk.Dispatcher
+import com.yuyakaido.android.reduxkit.middleware.thunk.ThunkMiddleware
 import com.yuyakaido.android.reduxkit.sample.app.store.AppStore
 import com.yuyakaido.android.reduxkit.sample.di.component.DaggerAppComponent
 import dagger.android.AndroidInjector
@@ -28,6 +30,7 @@ class ReduxKit : DaggerApplication() {
   }
 
   private fun initializeAppStore() {
+    appStore.addMiddleware(ThunkMiddleware(Dispatcher(appStore)))
     appStore.addMiddleware(LoggerMiddleware())
   }
 

@@ -6,7 +6,7 @@ import com.yuyakaido.android.reduxkit.core.StateType
 import io.reactivex.Single
 
 class ThunkMiddleware(
-  private val dispatcher: DispatcherType
+  private val dispatcher: Dispatcher
 ) : MiddlewareType {
 
   override fun before(state: StateType, action: ActionType): Single<ActionType> {

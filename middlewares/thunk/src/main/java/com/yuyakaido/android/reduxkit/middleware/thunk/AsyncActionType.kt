@@ -4,5 +4,5 @@ import com.yuyakaido.android.reduxkit.core.ActionType
 import io.reactivex.Single
 
 interface AsyncActionType : ActionType {
-  fun execute(dispatcher: DispatcherType): Single<ActionType>
+  fun execute(dispatcher: Dispatcher): Single<ActionType>
 }

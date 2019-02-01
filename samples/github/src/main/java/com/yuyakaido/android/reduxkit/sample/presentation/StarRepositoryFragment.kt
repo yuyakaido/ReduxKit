@@ -49,9 +49,9 @@ class StarRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener {
 
   override fun onStarClick(repo: Repo) {
     if (repo.isStarred) {
-      starActionCreator.unstarRepo(repo).addTo(disposables)
+      appStore.dispatch(starActionCreator.unstarRepo(repo)).addTo(disposables)
     } else {
-      starActionCreator.starRepo(repo).addTo(disposables)
+      appStore.dispatch(starActionCreator.starRepo(repo)).addTo(disposables)
     }
   }
 
@@ -79,7 +79,7 @@ class StarRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener {
   }
 
   private fun refresh() {
-    starActionCreator.fetchStarRepositories().addTo(disposables)
+    appStore.dispatch(starActionCreator.fetchStarRepositories()).addTo(disposables)
   }
 
 }

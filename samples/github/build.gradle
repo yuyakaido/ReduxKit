@@ -30,6 +30,7 @@ dependencies {
     // ReduxKit
     implementation project(':core')
     implementation project(':middlewares:logger')
+    implementation project(':middlewares:thunk')
     implementation project(':server')
 
     // Kotlin

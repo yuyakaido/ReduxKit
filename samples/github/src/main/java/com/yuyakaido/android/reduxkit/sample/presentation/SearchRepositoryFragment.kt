@@ -53,9 +53,9 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
 
   override fun onStarClick(repo: Repo) {
     if (repo.isStarred) {
-      starActionCreator.unstarRepo(repo).addTo(disposables)
+      appStore.dispatch(starActionCreator.unstarRepo(repo)).addTo(disposables)
     } else {
-      starActionCreator.starRepo(repo).addTo(disposables)
+      appStore.dispatch(starActionCreator.starRepo(repo)).addTo(disposables)
     }
   }
 
@@ -84,7 +84,7 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
 
   private fun refresh() {
     val query = "CardStackView"
-    searchActionCreator.fetchSearchRepositories(query).addTo(disposables)
+    appStore.dispatch(searchActionCreator.fetchSearchRepositories(query)).addTo(disposables)
   }
 
 }

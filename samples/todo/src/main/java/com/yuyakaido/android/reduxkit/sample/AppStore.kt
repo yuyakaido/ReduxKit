@@ -3,6 +3,7 @@ package com.yuyakaido.android.reduxkit.sample
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.yuyakaido.android.reduxkit.core.ActionType
 import com.yuyakaido.android.reduxkit.core.MiddlewareType
+import com.yuyakaido.android.reduxkit.core.StoreType
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
