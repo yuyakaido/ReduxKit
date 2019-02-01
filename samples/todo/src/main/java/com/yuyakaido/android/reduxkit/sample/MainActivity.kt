@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun refresh() {
-    getAppStore().dispatch(AppAction.FetchTodos).addTo(disposables)
+    getAppStore().dispatch(AppAction.RefreshTodos(Todo.createSampleTodos())).addTo(disposables)
   }
 
 }

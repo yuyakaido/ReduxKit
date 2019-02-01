@@ -15,9 +15,6 @@ object AppReducer : ReducerType<AppState, AppAction> {
       is AppAction.CompleteTodo -> {
         state.copy(todos = state.todos.minus(action.todo))
       }
-      is AppAction.FetchTodos -> {
-        state
-      }
     }
   }
 
