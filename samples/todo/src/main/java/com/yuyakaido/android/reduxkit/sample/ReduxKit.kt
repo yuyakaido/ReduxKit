@@ -10,7 +10,7 @@ class ReduxKit : Application() {
 
   override fun onCreate() {
     super.onCreate()
-    appStore.addMiddleware(ThunkMiddleware())
+    appStore.addMiddleware(ThunkMiddleware(Dispatcher(appStore)))
     appStore.addMiddleware(LoggerMiddleware())
   }
 
