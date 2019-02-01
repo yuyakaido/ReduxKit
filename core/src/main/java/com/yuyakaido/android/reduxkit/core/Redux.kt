@@ -10,7 +10,7 @@ interface ReducerType<STATE : StateType, ACTION : ActionType> {
   fun reduce(state: STATE, action: ACTION): STATE
 }
 
-interface MiddlewareType<STATE : StateType, ACTION : ActionType> {
-  fun before(state: STATE, action: ACTION): Single<ACTION>
-  fun after(state: STATE, action: ACTION): Single<ACTION>
+interface MiddlewareType {
+  fun before(state: StateType, action: ActionType): Single<ActionType>
+  fun after(state: StateType, action: ActionType): Single<ActionType>
 }

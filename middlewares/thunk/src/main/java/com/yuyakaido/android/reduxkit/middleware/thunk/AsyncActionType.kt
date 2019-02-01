@@ -1,8 +1,8 @@
-package com.yuyakaido.android.reduxkit.sample
+package com.yuyakaido.android.reduxkit.middleware.thunk
 
 import com.yuyakaido.android.reduxkit.core.ActionType
 import io.reactivex.Single
 
 interface AsyncActionType : ActionType {
-  fun execute(): Single<AppAction>
+  fun execute(): Single<ActionType>
 }

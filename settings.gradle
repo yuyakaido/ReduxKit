@@ -1,1 +1,1 @@
-include ':core', 'middlewares:logger', ':server', 'samples:github', 'samples:todo'
+include ':core', 'middlewares:thunk', 'middlewares:logger', ':server', 'samples:github', 'samples:todo'
