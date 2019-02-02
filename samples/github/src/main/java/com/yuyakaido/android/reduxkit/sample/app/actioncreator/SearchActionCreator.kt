@@ -18,11 +18,11 @@ class SearchActionCreator @Inject constructor(
     return object : AsyncActionType {
       override fun execute(dispatcher: Dispatcher): Single<ActionType> {
         return repository.searchRepositoriesByQuery(query)
-          .doOnSubscribe { dispatcher.dispatch(AppAction.SearchAction.RefreshRepos(emptyList())) }
-          .doOnSubscribe { dispatcher.dispatch(AppAction.SearchAction.RefreshLoading(true)) }
-          .doOnEvent { _, _ -> dispatcher.dispatch(AppAction.SearchAction.RefreshLoading(false)) }
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
+          .doOnSubscribe { dispatcher.dispatch(AppAction.SearchAction.RefreshLoading(true)) }
+          .doOnEvent { _, _ -> dispatcher.dispatch(AppAction.SearchAction.RefreshLoading(false)) }
+          .onErrorReturn { emptyList() }
           .doOnSuccess { repos -> dispatcher.dispatch(AppAction.DomainAction.PutRepos(repos)) }
           .map { repos -> AppAction.SearchAction.RefreshRepos(repos) }
       }

@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jakewharton.rxbinding2.widget.textChangeEvents
 import com.yuyakaido.android.reduxkit.sample.app.actioncreator.SearchActionCreator
 import com.yuyakaido.android.reduxkit.sample.app.actioncreator.StarActionCreator
 import com.yuyakaido.android.reduxkit.sample.databinding.FragmentSearchRepositoryBinding
@@ -12,6 +13,7 @@ import com.yuyakaido.android.reduxkit.sample.domain.Repo
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener {
@@ -41,9 +43,9 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setupEditText()
     setupSwipeRefreshLayout()
     setupRecyclerView()
-    refresh()
   }
 
   override fun onDestroyView() {
@@ -57,6 +59,17 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
     } else {
       appStore.dispatch(starActionCreator.starRepo(repo))
     }
+  }
+
+  private fun setupEditText() {
+    binding.editText.textChangeEvents()
+      .map { it.text().toString() }
+      .distinctUntilChanged()
+      .throttleWithTimeout(200, TimeUnit.MILLISECONDS)
+      .subscribeBy { query ->
+        appStore.dispatch(searchActionCreator.fetchSearchRepositories(query))
+      }
+      .addTo(disposables)
   }
 
   private fun setupSwipeRefreshLayout() {
@@ -83,7 +96,7 @@ class SearchRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener
   }
 
   private fun refresh() {
-    val query = "CardStackView"
+    val query = binding.editText.text.toString()
     appStore.dispatch(searchActionCreator.fetchSearchRepositories(query))
   }
 
