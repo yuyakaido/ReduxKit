@@ -21,6 +21,8 @@ sealed class AppAction : ActionType {
   sealed class StarAction : AppAction() {
     data class RefreshLoading(val isLoading: Boolean) : StarAction()
     data class RefreshRepos(val repos: List<Repo>) : StarAction()
+    data class AddRepo(val repo: Repo) : StarAction()
+    data class RemoveRepo(val repo: Repo) : StarAction()
   }
 
 }

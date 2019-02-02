@@ -18,6 +18,16 @@ object StarReducer : ReducerType<StarStoreState, AppAction.StarAction> {
           repos = action.repos.map { StarStoreState.StarRepo(it.id) }
         )
       }
+      is AppAction.StarAction.AddRepo -> {
+        state.copy(
+          repos = listOf(StarStoreState.StarRepo(action.repo.id)).plus(state.repos)
+        )
+      }
+      is AppAction.StarAction.RemoveRepo -> {
+        state.copy(
+          repos = state.repos.minus(StarStoreState.StarRepo(action.repo.id))
+        )
+      }
     }
   }
 

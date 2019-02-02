@@ -36,7 +36,8 @@ class StarActionCreator @Inject constructor(
         return repository.starRepo(repo)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .map { AppAction.DomainAction.StarRepo(it) }
+          .doOnSuccess { repo -> dispatcher.dispatch(AppAction.DomainAction.StarRepo(repo)) }
+          .map { repo -> AppAction.StarAction.AddRepo(repo) }
       }
     }
   }
@@ -47,7 +48,8 @@ class StarActionCreator @Inject constructor(
         return repository.unstarRepo(repo)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .map { AppAction.DomainAction.UnstarRepo(it) }
+          .doOnSuccess { repo -> dispatcher.dispatch(AppAction.DomainAction.UnstarRepo(repo)) }
+          .map { repo -> AppAction.StarAction.RemoveRepo(repo) }
       }
     }
   }
