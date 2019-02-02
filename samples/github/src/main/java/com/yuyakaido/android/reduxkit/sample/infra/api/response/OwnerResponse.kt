@@ -22,12 +22,10 @@ data class OwnerResponse(
       login = login,
       name = name,
       bio = bio,
-      avatarUrl = avatarUrl,
-      company = company,
       location = location,
+      company = company,
       blog = blog,
-      createdAt = createdAt,
-      updatedAt = updatedAt
+      avatarUrl = avatarUrl
     )
   }
 
