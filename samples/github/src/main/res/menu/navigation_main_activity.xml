@@ -11,7 +11,7 @@
     <item
             android:id="@+id/navigation_star"
             android:title="@string/navigation_star"
-            android:icon="@drawable/ic_star_black_24dp"
+            android:icon="@drawable/ic_star_on_black_24dp"
     />
 
     <item

@@ -26,6 +26,9 @@ class RepoAdapter(
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val repo = repos[position]
     holder.name.text = repo.fullName
+    holder.description.text = repo.description
+    holder.starCount.text = repo.stargazersCount.toString()
+    holder.language.text = repo.language
     holder.star.setOnClickListener { listener?.onStarClick(repo) }
     if (repo.isStarred) {
       holder.star.setImageResource(R.drawable.ic_star_on_black_24dp)
@@ -45,6 +48,9 @@ class RepoAdapter(
 
   class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val name: TextView = view.findViewById(R.id.name)
+    val description: TextView = view.findViewById(R.id.description)
+    val starCount: TextView = view.findViewById(R.id.star_count)
+    val language: TextView = view.findViewById(R.id.language)
     val star: ImageView = view.findViewById(R.id.star)
   }
 
