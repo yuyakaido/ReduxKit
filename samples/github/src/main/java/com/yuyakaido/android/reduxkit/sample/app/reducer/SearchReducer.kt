@@ -9,14 +9,10 @@ object SearchReducer : ReducerType<SearchStoreState, AppAction.SearchAction> {
   override fun reduce(state: SearchStoreState, action: AppAction.SearchAction): SearchStoreState {
     return when (action) {
       is AppAction.SearchAction.RefreshLoading -> {
-        state.copy(
-          isLoading = action.isLoading
-        )
+        state.copy(isLoading = action.isLoading)
       }
       is AppAction.SearchAction.RefreshRepos -> {
-        state.copy(
-          repos = action.repos.map { SearchStoreState.SearchRepo(it.id) }
-        )
+        state.copy(repos = action.repos.map { SearchStoreState.SearchRepo(it.id) })
       }
     }
   }

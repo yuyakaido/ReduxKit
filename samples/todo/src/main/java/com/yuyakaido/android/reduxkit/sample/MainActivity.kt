@@ -30,11 +30,9 @@ class MainActivity : AppCompatActivity() {
     val adapter = TodoAdapter()
     binding.recyclerView.layoutManager = LinearLayoutManager(this)
     binding.recyclerView.adapter = adapter
-
     getAppStore().observable()
-      .map { it.todos }
-      .subscribeBy { todos ->
-        adapter.setTodos(todos)
+      .subscribeBy { state ->
+        adapter.setTodos(state.todos)
         adapter.notifyDataSetChanged()
       }
       .addTo(disposables)

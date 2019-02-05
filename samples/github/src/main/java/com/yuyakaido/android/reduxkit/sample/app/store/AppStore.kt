@@ -27,7 +27,9 @@ class AppStore(
         .flatMap { originalAction ->
           var stream = Single.just(originalAction)
           middlewares.forEach { middleware ->
-            stream = stream.flatMap { currentAction -> middleware.before(currentState, currentAction) }
+            stream = stream.flatMap { currentAction ->
+              middleware.before(currentState, currentAction)
+            }
           }
           return@flatMap stream
         }
@@ -35,7 +37,9 @@ class AppStore(
         .flatMap { originalAction ->
           var stream = Single.just(originalAction)
           middlewares.forEach { middleware ->
-            stream = stream.flatMap { currentAction -> middleware.after(currentState, currentAction) }
+            stream = stream.flatMap { currentAction ->
+              middleware.after(currentState, currentAction)
+            }
           }
           return@flatMap stream
         }
