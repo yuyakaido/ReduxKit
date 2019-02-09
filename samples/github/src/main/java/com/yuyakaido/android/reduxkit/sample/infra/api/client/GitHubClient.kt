@@ -3,8 +3,9 @@ package com.yuyakaido.android.reduxkit.sample.infra.api.client
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.yuyakaido.android.reduxkit.sample.BuildConfig
+import com.yuyakaido.android.reduxkit.sample.GetStarredRepositoryQuery
+import com.yuyakaido.android.reduxkit.sample.GetViewerQuery
 import com.yuyakaido.android.reduxkit.sample.SearchRepositoryQuery
-import com.yuyakaido.android.reduxkit.sample.ViewerQuery
 import com.yuyakaido.android.reduxkit.sample.domain.AccessToken
 import com.yuyakaido.android.reduxkit.sample.domain.Owner
 import com.yuyakaido.android.reduxkit.sample.domain.Repo
@@ -63,17 +64,37 @@ class GitHubClient @Inject constructor(
   }
 
   fun getStarredRepositories(): Single<List<Repo>> {
-    return apiService.getStarredRepositories()
-      .map { responses ->
-        responses.map { response ->
-          response.toRepo(hasStarred = true)
+    return Rx2Apollo.from(apolloClient.query(GetStarredRepositoryQuery()).watcher())
+      .map { response -> response.data()?.viewer()?.starredRepositories()?.edges() }
+      .map { edges -> edges.map { edge -> edge.node() } }
+      .map { repos ->
+        repos.map { repo ->
+          val owner = repo.owner()
+          Repo(
+            id = repo.id(),
+            name = repo.name(),
+            owner = Owner(
+              login = owner.login(),
+              name = null,
+              bio = null,
+              company = null,
+              location = null,
+              avatarUrl = owner.avatarUrl().toString(),
+              websiteUrl = null
+            ),
+            nameWithOwner = repo.nameWithOwner(),
+            description = repo.description(),
+            primaryLanguage = repo.primaryLanguage()?.name(),
+            stargazersTotalCount = repo.stargazers().totalCount(),
+            hasStarred = repo.viewerHasStarred()
+          )
         }
       }
-      .singleOrError()
+      .firstOrError()
   }
 
   fun getUser(): Single<Owner> {
-    return Rx2Apollo.from(apolloClient.query(ViewerQuery()).watcher())
+    return Rx2Apollo.from(apolloClient.query(GetViewerQuery()).watcher())
       .map { response ->
         val viewer = response.data()!!.viewer()
         Owner(

@@ -1,0 +1,26 @@
+query GetStarredRepository {
+  viewer {
+    starredRepositories(first: 20, orderBy: {field: STARRED_AT, direction: DESC}) {
+      edges {
+        node {
+          id
+          name
+          owner {
+            id
+            login
+            avatarUrl
+          }
+          nameWithOwner
+          description
+          primaryLanguage {
+            name
+          }
+          stargazers {
+            totalCount
+          }
+          viewerHasStarred
+        }
+      }
+    }
+  }
+}
