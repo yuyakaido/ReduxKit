@@ -15,7 +15,7 @@ class StarActionCreator @Inject constructor(
   private val repository: GitHubRepository
 ) {
 
-  fun fetchStarRepositories(): AsyncActionType {
+  fun fetchStarredRepositories(): AsyncActionType {
     return object : AsyncActionType {
       override fun execute(dispatcher: Dispatcher): Single<ActionType> {
         return repository.getStarredRepositories()
@@ -30,25 +30,25 @@ class StarActionCreator @Inject constructor(
     }
   }
 
-  fun starRepo(repo: Repo): AsyncActionType {
+  fun addStar(repo: Repo): AsyncActionType {
     return object : AsyncActionType {
       override fun execute(dispatcher: Dispatcher): Single<ActionType> {
-        return repository.starRepo(repo)
+        return repository.addStar(repo)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .doOnSuccess { repo -> dispatcher.dispatch(AppAction.DomainAction.StarRepo(repo)) }
+          .doOnSuccess { repo -> dispatcher.dispatch(AppAction.DomainAction.PutRepo(repo)) }
           .map { repo -> AppAction.StarAction.AddRepo(repo) }
       }
     }
   }
 
-  fun unstarRepo(repo: Repo): AsyncActionType {
+  fun removeStar(repo: Repo): AsyncActionType {
     return object : AsyncActionType {
       override fun execute(dispatcher: Dispatcher): Single<ActionType> {
-        return repository.unstarRepo(repo)
+        return repository.removeStar(repo)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .doOnSuccess { repo -> dispatcher.dispatch(AppAction.DomainAction.UnstarRepo(repo)) }
+          .doOnSuccess { repo -> dispatcher.dispatch(AppAction.DomainAction.PutRepo(repo)) }
           .map { repo -> AppAction.StarAction.RemoveRepo(repo) }
       }
     }

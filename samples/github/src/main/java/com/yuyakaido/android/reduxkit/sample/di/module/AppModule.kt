@@ -8,8 +8,6 @@ import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.yuyakaido.android.reduxkit.sample.app.ReduxKit
 import com.yuyakaido.android.reduxkit.sample.app.store.AppStore
 import com.yuyakaido.android.reduxkit.sample.di.annotation.AppScope
-import com.yuyakaido.android.reduxkit.sample.di.annotation.GitHubApiRetrofit
-import com.yuyakaido.android.reduxkit.sample.di.annotation.GitHubAuthRetrofit
 import com.yuyakaido.android.reduxkit.sample.infra.GitHubInterceptor
 import com.yuyakaido.android.reduxkit.sample.infra.api.client.GitHubClient
 import com.yuyakaido.android.reduxkit.sample.type.CustomType
@@ -67,7 +65,6 @@ class AppModule {
       .build()
   }
 
-  @GitHubAuthRetrofit
   @AppScope
   @Provides
   fun provideGitHubAuthRetrofit(client: OkHttpClient): Retrofit {
@@ -79,32 +76,12 @@ class AppModule {
       .build()
   }
 
-  @GitHubApiRetrofit
-  @AppScope
-  @Provides
-  fun provideGitHubApiRetrofit(client: OkHttpClient): Retrofit {
-    return Retrofit.Builder()
-      .client(client)
-      .addConverterFactory(GsonConverterFactory.create())
-      .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-      .baseUrl("https://api.github.com/")
-      .build()
-  }
-
   @AppScope
   @Provides
   fun provideGitHubAuthService(
-    @GitHubAuthRetrofit retrofit: Retrofit
-  ): GitHubClient.GitHubAuthService {
-    return retrofit.create(GitHubClient.GitHubAuthService::class.java)
-  }
-
-  @AppScope
-  @Provides
-  fun provideGitHubApiService(
-    @GitHubApiRetrofit retrofit: Retrofit
-  ): GitHubClient.GitHubApiService {
-    return retrofit.create(GitHubClient.GitHubApiService::class.java)
+    retrofit: Retrofit
+  ): GitHubClient.AuthService {
+    return retrofit.create(GitHubClient.AuthService::class.java)
   }
 
 }

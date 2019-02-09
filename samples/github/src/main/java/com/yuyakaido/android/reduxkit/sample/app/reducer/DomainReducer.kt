@@ -15,11 +15,8 @@ object DomainReducer : ReducerType<DomainState, AppAction.DomainAction> {
       is AppAction.DomainAction.PutRepos -> {
         state.apply { repos.apply { putAll(action.repos.associate { it.id to it }) } }
       }
-      is AppAction.DomainAction.StarRepo -> {
-        state.apply { repos[action.repo.id] = action.repo.copy(hasStarred = true) }
-      }
-      is AppAction.DomainAction.UnstarRepo -> {
-        state.apply { repos[action.repo.id] = action.repo.copy(hasStarred = false) }
+      is AppAction.DomainAction.PutRepo -> {
+        state.apply { repos.apply { put(action.repo.id, action.repo) } }
       }
     }
   }

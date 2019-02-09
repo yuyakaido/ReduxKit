@@ -9,8 +9,7 @@ sealed class AppAction : ActionType {
   sealed class DomainAction : AppAction() {
     data class RefreshUser(val user: Owner) : DomainAction()
     data class PutRepos(val repos: List<Repo>) : DomainAction()
-    data class StarRepo(val repo: Repo) : DomainAction()
-    data class UnstarRepo(val repo: Repo) : DomainAction()
+    data class PutRepo(val repo: Repo) : DomainAction()
   }
 
   sealed class SearchAction : AppAction() {

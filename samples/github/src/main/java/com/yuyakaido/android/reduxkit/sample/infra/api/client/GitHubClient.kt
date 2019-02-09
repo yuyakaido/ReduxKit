@@ -2,24 +2,21 @@ package com.yuyakaido.android.reduxkit.sample.infra.api.client
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
-import com.yuyakaido.android.reduxkit.sample.BuildConfig
-import com.yuyakaido.android.reduxkit.sample.GetStarredRepositoryQuery
-import com.yuyakaido.android.reduxkit.sample.GetViewerQuery
-import com.yuyakaido.android.reduxkit.sample.SearchRepositoryQuery
+import com.yuyakaido.android.reduxkit.sample.*
 import com.yuyakaido.android.reduxkit.sample.domain.AccessToken
 import com.yuyakaido.android.reduxkit.sample.domain.Owner
 import com.yuyakaido.android.reduxkit.sample.domain.Repo
 import com.yuyakaido.android.reduxkit.sample.infra.AccessTokenResponse
-import com.yuyakaido.android.reduxkit.sample.infra.api.response.RepoResponse
 import io.reactivex.Observable
 import io.reactivex.Single
-import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Headers
+import retrofit2.http.POST
 import javax.inject.Inject
 
 class GitHubClient @Inject constructor(
-  private val authService: GitHubAuthService,
-  private val apiService: GitHubApiService,
+  private val authService: AuthService,
   private val apolloClient: ApolloClient
 ) {
 
@@ -33,7 +30,7 @@ class GitHubClient @Inject constructor(
       .singleOrError()
   }
 
-  fun searchRepositoriesByQuery(query: String): Single<List<Repo>> {
+  fun searchRepositories(query: String): Single<List<Repo>> {
     return Rx2Apollo.from(apolloClient.query(SearchRepositoryQuery(query)).watcher())
       .map { response -> response.data()?.search()?.edges() }
       .map { edges -> edges.map { edge -> edge.node() as SearchRepositoryQuery.AsRepository } }
@@ -110,25 +107,19 @@ class GitHubClient @Inject constructor(
       .firstOrError()
   }
 
-  fun starRepo(repo: Repo): Single<Repo> {
-    return apiService.starRepo(
-      owner = repo.owner.login,
-      repo = repo.name
-    )
+  fun addStar(repo: Repo): Single<Repo> {
+    return Rx2Apollo.from(apolloClient.mutate(AddStarMutation(repo.id)))
       .map { repo.copy(hasStarred = true) }
-      .singleOrError()
+      .firstOrError()
   }
 
-  fun unstarRepo(repo: Repo): Single<Repo> {
-    return apiService.unstarRepo(
-      owner = repo.owner.login,
-      repo = repo.name
-    )
+  fun removeStar(repo: Repo): Single<Repo> {
+    return Rx2Apollo.from(apolloClient.mutate(RemoveStarMutation(repo.id)))
       .map { repo.copy(hasStarred = false) }
-      .singleOrError()
+      .firstOrError()
   }
 
-  interface GitHubAuthService {
+  interface AuthService {
     @FormUrlEncoded
     @Headers("Accept: application/json")
     @POST("access_token")
@@ -137,23 +128,6 @@ class GitHubClient @Inject constructor(
       @Field("client_secret") clientSecret: String,
       @Field("code") code: String
     ): Observable<AccessTokenResponse>
-  }
-
-  interface GitHubApiService {
-    @GET("user/starred")
-    fun getStarredRepositories(): Observable<List<RepoResponse>>
-
-    @PUT("user/starred/{owner}/{repo}")
-    fun starRepo(
-      @Path("owner") owner: String,
-      @Path("repo") repo: String
-    ): Observable<Response<Unit>>
-
-    @DELETE("user/starred/{owner}/{repo}")
-    fun unstarRepo(
-      @Path("owner") owner: String,
-      @Path("repo") repo: String
-    ): Observable<Response<Unit>>
   }
 
 }

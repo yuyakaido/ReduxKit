@@ -15,8 +15,8 @@ class GitHubRepository @Inject constructor(
     return client.getAccessToken(code)
   }
 
-  fun searchRepositoriesByQuery(query: String): Single<List<Repo>> {
-    return client.searchRepositoriesByQuery(query)
+  fun searchRepositories(query: String): Single<List<Repo>> {
+    return client.searchRepositories(query)
   }
 
   fun getStarredRepositories(): Single<List<Repo>> {
@@ -27,12 +27,12 @@ class GitHubRepository @Inject constructor(
     return client.getUser()
   }
 
-  fun starRepo(repo: Repo): Single<Repo> {
-    return client.starRepo(repo)
+  fun addStar(repo: Repo): Single<Repo> {
+    return client.addStar(repo)
   }
 
-  fun unstarRepo(repo: Repo): Single<Repo> {
-    return client.unstarRepo(repo)
+  fun removeStar(repo: Repo): Single<Repo> {
+    return client.removeStar(repo)
   }
 
 }

@@ -17,7 +17,7 @@ class SearchActionCreator @Inject constructor(
   fun fetchSearchRepositories(query: String): AsyncActionType {
     return object : AsyncActionType {
       override fun execute(dispatcher: Dispatcher): Single<ActionType> {
-        return repository.searchRepositoriesByQuery(query)
+        return repository.searchRepositories(query)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .doOnSubscribe { dispatcher.dispatch(AppAction.SearchAction.RefreshLoading(true)) }
