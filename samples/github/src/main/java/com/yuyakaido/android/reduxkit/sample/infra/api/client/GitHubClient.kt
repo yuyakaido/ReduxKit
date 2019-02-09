@@ -1,12 +1,14 @@
 package com.yuyakaido.android.reduxkit.sample.infra.api.client
 
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.rx2.Rx2Apollo
 import com.yuyakaido.android.reduxkit.sample.BuildConfig
+import com.yuyakaido.android.reduxkit.sample.ViewerQuery
 import com.yuyakaido.android.reduxkit.sample.domain.AccessToken
 import com.yuyakaido.android.reduxkit.sample.domain.Owner
 import com.yuyakaido.android.reduxkit.sample.domain.Repo
 import com.yuyakaido.android.reduxkit.sample.infra.AccessTokenResponse
 import com.yuyakaido.android.reduxkit.sample.infra.SearchResponse
-import com.yuyakaido.android.reduxkit.sample.infra.api.response.OwnerResponse
 import com.yuyakaido.android.reduxkit.sample.infra.api.response.RepoResponse
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -16,7 +18,8 @@ import javax.inject.Inject
 
 class GitHubClient @Inject constructor(
   private val authService: GitHubAuthService,
-  private val apiService: GitHubApiService
+  private val apiService: GitHubApiService,
+  private val apolloClient: ApolloClient
 ) {
 
   fun getAccessToken(code: String): Single<AccessToken> {
@@ -46,9 +49,20 @@ class GitHubClient @Inject constructor(
   }
 
   fun getUser(): Single<Owner> {
-    return apiService.getUser()
-      .map { it.toOwner() }
-      .singleOrError()
+    return Rx2Apollo.from(apolloClient.query(ViewerQuery()).watcher())
+      .map { response ->
+        val viewer = response.data()!!.viewer()
+        Owner(
+          login = viewer.login(),
+          name = viewer.name(),
+          bio = viewer.bio(),
+          company = viewer.company(),
+          location = viewer.location(),
+          avatarUrl = viewer.avatarUrl().toString(),
+          websiteUrl = viewer.websiteUrl()?.toString()
+        )
+      }
+      .firstOrError()
   }
 
   fun starRepo(repo: Repo): Single<Repo> {
@@ -85,9 +99,6 @@ class GitHubClient @Inject constructor(
     fun searchRepositoriesByQuery(
       @Query("q") query: String
     ): Observable<SearchResponse>
-
-    @GET("user")
-    fun getUser(): Observable<OwnerResponse>
 
     @GET("user/starred")
     fun getStarredRepositories(): Observable<List<RepoResponse>>

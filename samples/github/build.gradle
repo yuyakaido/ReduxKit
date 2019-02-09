@@ -1,6 +1,23 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.apollographql.android'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.apollographql.apollo:apollo-gradle-plugin:1.0.0-alpha5'
+    }
+}
+
+apollo {
+    customTypeMapping = [
+            "URI" : "java.net.URI"
+    ]
+}
 
 android {
     compileSdkVersion 28
@@ -64,6 +81,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation 'org.nanohttpd:nanohttpd:2.2.0'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.apollographql.apollo:apollo-runtime:1.0.0-alpha5'
+    implementation 'com.apollographql.apollo:apollo-rx2-support:1.0.0-alpha5'
 
     // Dependency Injection
     implementation 'com.google.dagger:dagger:2.20'

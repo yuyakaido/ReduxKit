@@ -64,7 +64,7 @@ class ProfileFragment : BaseFragment() {
     binding.bio.text = getString(R.string.profile_bio, user.bio)
     binding.company.text = getString(R.string.profile_company, user.company)
     binding.location.text = getString(R.string.profile_location, user.location)
-    binding.blog.text = getString(R.string.profile_blog, user.blog)
+    binding.blog.text = getString(R.string.profile_blog, user.websiteUrl)
   }
 
 }
