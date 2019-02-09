@@ -7,10 +7,10 @@ import com.yuyakaido.android.reduxkit.sample.misc.Pack
 
 data class DomainState(
   val user: Pack<Owner?> = Pack(null),
-  val repos: MutableMap<Long, Repo> = mutableMapOf()
+  val repos: MutableMap<String, Repo> = mutableMapOf()
 ) : StateType {
 
-  fun findRepoById(id: Long): Repo {
+  fun findRepoById(id: String): Repo {
     return repos.getValue(id)
   }
 

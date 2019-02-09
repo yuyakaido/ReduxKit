@@ -8,7 +8,7 @@ data class StarStoreState(
 ) : StateType {
 
   data class StarRepo(
-    val id: Long
+    val id: String
   )
 
 }

@@ -1,0 +1,26 @@
+query SearchRepository($query: String!) {
+  search(query: $query, type: REPOSITORY, first: 20) {
+    edges {
+      node {
+        ... on Repository {
+          id
+          name
+          owner {
+            id
+            login
+            avatarUrl
+          }
+          nameWithOwner
+          description
+          primaryLanguage {
+            name
+          }
+          stargazers {
+            totalCount
+          }
+          viewerHasStarred
+        }
+      }
+    }
+  }
+}

@@ -3,12 +3,12 @@ package com.yuyakaido.android.reduxkit.sample.infra.api.client
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx2.Rx2Apollo
 import com.yuyakaido.android.reduxkit.sample.BuildConfig
+import com.yuyakaido.android.reduxkit.sample.SearchRepositoryQuery
 import com.yuyakaido.android.reduxkit.sample.ViewerQuery
 import com.yuyakaido.android.reduxkit.sample.domain.AccessToken
 import com.yuyakaido.android.reduxkit.sample.domain.Owner
 import com.yuyakaido.android.reduxkit.sample.domain.Repo
 import com.yuyakaido.android.reduxkit.sample.infra.AccessTokenResponse
-import com.yuyakaido.android.reduxkit.sample.infra.SearchResponse
 import com.yuyakaido.android.reduxkit.sample.infra.api.response.RepoResponse
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -32,17 +32,41 @@ class GitHubClient @Inject constructor(
       .singleOrError()
   }
 
-  fun searchedRepositoriesByQuery(query: String): Single<List<Repo>> {
-    return apiService.searchRepositoriesByQuery(query)
-      .map { it.toRepos() }
-      .singleOrError()
+  fun searchRepositoriesByQuery(query: String): Single<List<Repo>> {
+    return Rx2Apollo.from(apolloClient.query(SearchRepositoryQuery(query)).watcher())
+      .map { response -> response.data()?.search()?.edges() }
+      .map { edges -> edges.map { edge -> edge.node() as SearchRepositoryQuery.AsRepository } }
+      .map { repos ->
+        repos.map { repo ->
+          val owner = repo.owner()
+          Repo(
+            id = repo.id(),
+            name = repo.name(),
+            owner = Owner(
+              login = owner.login(),
+              name = null,
+              bio = null,
+              company = null,
+              location = null,
+              avatarUrl = owner.avatarUrl().toString(),
+              websiteUrl = null
+            ),
+            nameWithOwner = repo.nameWithOwner(),
+            description = repo.description(),
+            primaryLanguage = repo.primaryLanguage()?.name(),
+            stargazersTotalCount = repo.stargazers().totalCount(),
+            hasStarred = repo.viewerHasStarred()
+          )
+        }
+      }
+      .firstOrError()
   }
 
   fun getStarredRepositories(): Single<List<Repo>> {
     return apiService.getStarredRepositories()
       .map { responses ->
         responses.map { response ->
-          response.toRepo(isStarred = true)
+          response.toRepo(hasStarred = true)
         }
       }
       .singleOrError()
@@ -70,7 +94,7 @@ class GitHubClient @Inject constructor(
       owner = repo.owner.login,
       repo = repo.name
     )
-      .map { repo.copy(isStarred = true) }
+      .map { repo.copy(hasStarred = true) }
       .singleOrError()
   }
 
@@ -79,7 +103,7 @@ class GitHubClient @Inject constructor(
       owner = repo.owner.login,
       repo = repo.name
     )
-      .map { repo.copy(isStarred = false) }
+      .map { repo.copy(hasStarred = false) }
       .singleOrError()
   }
 
@@ -95,11 +119,6 @@ class GitHubClient @Inject constructor(
   }
 
   interface GitHubApiService {
-    @GET("search/repositories")
-    fun searchRepositoriesByQuery(
-      @Query("q") query: String
-    ): Observable<SearchResponse>
-
     @GET("user/starred")
     fun getStarredRepositories(): Observable<List<RepoResponse>>
 

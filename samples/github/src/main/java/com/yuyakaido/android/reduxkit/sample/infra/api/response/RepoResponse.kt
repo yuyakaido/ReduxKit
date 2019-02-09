@@ -13,16 +13,16 @@ data class RepoResponse(
   @SerializedName("stargazers_count") val stargazersCount: Int
 ) {
 
-  fun toRepo(isStarred: Boolean): Repo {
+  fun toRepo(hasStarred: Boolean): Repo {
     return Repo(
-      id = id,
+      id = id.toString(),
       name = name,
       owner = owner.toOwner(),
-      fullName = fullName,
+      nameWithOwner = fullName,
       description = description,
-      language = language,
-      stargazersCount = stargazersCount,
-      isStarred = isStarred
+      primaryLanguage = language,
+      stargazersTotalCount = stargazersCount,
+      hasStarred = hasStarred
     )
   }
 

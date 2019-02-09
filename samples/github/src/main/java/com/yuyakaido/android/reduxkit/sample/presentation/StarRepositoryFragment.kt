@@ -48,7 +48,7 @@ class StarRepositoryFragment : BaseFragment(), RepoAdapter.OnStarClickListener {
   }
 
   override fun onStarClick(repo: Repo) {
-    if (repo.isStarred) {
+    if (repo.hasStarred) {
       appStore.dispatch(starActionCreator.unstarRepo(repo))
     } else {
       appStore.dispatch(starActionCreator.starRepo(repo))

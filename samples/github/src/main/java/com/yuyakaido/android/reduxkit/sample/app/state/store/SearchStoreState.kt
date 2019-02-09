@@ -8,7 +8,7 @@ data class SearchStoreState(
 ) : StateType {
 
   data class SearchRepo(
-    val id: Long
+    val id: String
   )
 
 }

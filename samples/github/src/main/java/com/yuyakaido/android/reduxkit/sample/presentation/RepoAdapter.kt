@@ -25,12 +25,12 @@ class RepoAdapter(
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val repo = repos[position]
-    holder.name.text = repo.fullName
+    holder.name.text = repo.nameWithOwner
     holder.description.text = repo.description
-    holder.starCount.text = repo.stargazersCount.toString()
-    holder.language.text = repo.language
+    holder.starCount.text = repo.stargazersTotalCount.toString()
+    holder.language.text = repo.primaryLanguage
     holder.star.setOnClickListener { listener?.onStarClick(repo) }
-    if (repo.isStarred) {
+    if (repo.hasStarred) {
       holder.star.setImageResource(R.drawable.ic_star_on_black_24dp)
     } else {
       holder.star.setImageResource(R.drawable.ic_star_off_black_24dp)
