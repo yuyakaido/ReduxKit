@@ -9,6 +9,7 @@ import com.yuyakaido.android.reduxkit.core.StoreType
 import com.yuyakaido.android.reduxkit.sample.app.action.AppAction
 import com.yuyakaido.android.reduxkit.sample.app.reducer.AppReducer
 import com.yuyakaido.android.reduxkit.sample.app.state.AppState
+import com.yuyakaido.android.reduxkit.server.StateHistory
 import com.yuyakaido.android.reduxkit.server.StateProvider
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -20,6 +21,8 @@ class AppStore(
 
   private val state = BehaviorRelay.createDefault(initial)
   private val middlewares = mutableListOf<MiddlewareType>()
+
+  private val histories = mutableListOf<StateHistory>()
 
   override fun dispatch(action: ActionType) {
     state.value?.let { currentState ->
@@ -51,6 +54,7 @@ class AppStore(
     state.value?.let { currentState ->
       val nextState = AppReducer.reduce(currentState, action as AppAction)
       state.accept(nextState)
+      histories.add(StateHistory(action::class.java.simpleName, nextState))
     }
   }
 
@@ -67,11 +71,10 @@ class AppStore(
   }
 
   override fun json(): String {
-    val current = state.value
-    return if (current == null) {
+    return if (histories.isEmpty()) {
       JsonObject().toString()
     } else {
-      Gson().toJson(current)
+      Gson().toJson(histories)
     }
   }
 
