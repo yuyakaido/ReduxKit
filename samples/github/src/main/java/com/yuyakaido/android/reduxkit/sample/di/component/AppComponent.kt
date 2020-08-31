@@ -18,7 +18,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 )
 interface AppComponent : AndroidInjector<ReduxKit> {
 
-  @Component.Builder
-  abstract class Builder : AndroidInjector.Builder<ReduxKit>()
+  @Component.Factory
+  abstract class Factory : AndroidInjector.Factory<ReduxKit>
 
 }
